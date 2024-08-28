@@ -77,11 +77,12 @@ static int cmd_x(char *args) {
 	int num_checkd;
 	unsigned int start_lochx;
 	sscanf(args,"%d %x",&num_checkd,&start_lochx);
-	int n_tmp=num_checkd;
-	for(;n_tmp>0;n_tmp--){
-		printf("%x",swaddr_read(start_lochx,4));
+	int n_tmp=0;
+	for(;n_tmp<num_checkd;n_tmp++){
+		printf("%x",swaddr_read(start_lochx+n_tmp*4,4));
 		printf(" ");
 	}
+	printf("\n");
 	return 0;
 }
 static int cmd_help(char *args);
