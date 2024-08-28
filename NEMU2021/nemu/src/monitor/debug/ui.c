@@ -70,7 +70,7 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 	/* TODO: Add more commands */
 	{"si","Single execuation",cmd_si},
-	{"info r","Print the present value of the register",cmd_infor},
+	{"infor","Print the present value of the register",cmd_infor},
 
 };
 
