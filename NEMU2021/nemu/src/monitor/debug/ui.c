@@ -53,7 +53,7 @@ static int cmd_si(char *args) {
 static int cmd_infor(char *args) {
 	int i=0;
 	for(;i<8;i++){
-		printf("%u\n",cpu.gpr[i]._32);
+		printf("%x\n",cpu.gpr[i]._32);
 	}
 	return 0;
 }
