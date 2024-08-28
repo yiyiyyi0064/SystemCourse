@@ -43,7 +43,8 @@ static int cmd_si(char *args) {
 	if(sscanf(num_exe,"%d",&num_exed)==1){
 		cpu_exec(num_exed);
 	}
-	}else{
+	}
+	else{
 	cpu_exec(1);
 	}
 	return 0;
