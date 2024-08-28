@@ -41,12 +41,19 @@ static int cmd_si(char *args) {
 	char* num_exe=strtok(args," ");
 	int num_exed;
 	if(sscanf(num_exe,"%d",&num_exed)==1){
-		printf("%d",num_exed);
+		//printf("%d",num_exed); 
 		cpu_exec(num_exed);
 	}
 	}
 	else{
 	cpu_exec(1);
+	}
+	return 0;
+}
+static int cmd_infor(char *args) {
+	int i=0;
+	for(;i<8;i++){
+		printf("%u\n",cpu.gpr[i]._32);
 	}
 	return 0;
 }
@@ -63,6 +70,7 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 	/* TODO: Add more commands */
 	{"si","Single execuation",cmd_si},
+	{"info r","Print the present value of the register",cmd_infor},
 
 };
 
