@@ -57,10 +57,12 @@ static int cmd_info(char *args) {
 		int i=0,j=0;
 		for(;i<8;i++){
 			printf("%s",name_reg[i]);
+			j=0;
 			for(;j<5;j++){
 				printf(" ");
 			}
 			printf("%x",cpu.gpr[i]._32);
+			j=0;
 			for(;j<5;j++){
 				printf(" ");
 			}
