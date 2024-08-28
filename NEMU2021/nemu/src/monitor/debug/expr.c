@@ -4,13 +4,15 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <sys/types.h>
-#include <regex.h>
+#include <regex.h>   //这是c语言自带的正则表达式的库
 
 enum {
-	NOTYPE = 256, EQ
-
+	NOTYPE = 256, 
+	EQ=1,
+	NUM=2,
+	HEX=3,
+	REG=4,
 	/* TODO: Add more token types */
-
 };
 
 static struct rule {
@@ -21,8 +23,15 @@ static struct rule {
 	/* TODO: Add more rules.
 	 * Pay attention to the precedence level of different rules.
 	 */
-
-	{" +",	NOTYPE},				// spaces
+	{"[0-9]+",NUM},							//decimal
+	{"0[xX][0-9a-fA-F]+",HEX},
+	{"\\$[a-z]+",REG},
+	{"\\)",')'},
+	{"\\(",'('},
+	{"\\/",'/'},						//divide
+	{"\\*",'*'},						//multiple
+	{"\\-",'-'},						//minor
+	{" +",	NOTYPE},				// spaces 这里用了+其实就是可以表示多个空格也可以只表示一个spaces
 	{"\\+", '+'},					// plus
 	{"==", EQ}						// equal
 };
@@ -66,9 +75,9 @@ static bool make_token(char *e) {
 	while(e[position] != '\0') {
 		/* Try all rules one by one. */
 		for(i = 0; i < NR_REGEX; i ++) {
-			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
-				char *substr_start = e + position;
-				int substr_len = pmatch.rm_eo;
+			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {//识别成功才会进入
+				char *substr_start = e + position;//这里是入口 这时候position还没更新 即rm.so
+				int substr_len = pmatch.rm_eo;// 识别得到的字符段(子串) rm_eo是匹配结束的位置
 
 				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
@@ -77,8 +86,58 @@ static bool make_token(char *e) {
 				 * to record the token in the array `tokens'. For certain types
 				 * of tokens, some extra actions should be performed.
 				 */
-
+				int j=0;
+				for(;j<32;j++){
+					tokens[nr_token].src[j]='\0'
+					//执行清空操作
+				}
 				switch(rules[i].token_type) {
+					case 256:
+						break;
+					case 1:
+						tokens[nr_token].type=1;
+						strncpy(tokens[nr_token].str,"==");
+						nr_token++;
+						break;
+					case 2:
+						tokens[nr_token].type=2;
+						strncpy(tokens[nr_token].str,&e[position-substr_len],substr_len);
+						nr_token++;
+						break;		
+					case 3:
+						tokens[nr_token].type=3;
+						strncpy(tokens[nr_token].str,&e[position-substr_len],substr_len);
+						nr_token++;
+						break;
+		            case 4:
+						tokens[nr_token].type=4;
+						strncpy(tokens[nr_token].str,&e[position-substr_len],substr_len);
+						nr_token++;
+						break;
+					case '+':
+						tokens[nr_token].type='+';//因为没有src 故不需要复制了
+						nr_token++;
+						break;
+					case '-':
+						tokens[nr_token].type='-';//因为没有src 故不需要复制了
+						nr_token++;
+						break;
+					case '*':
+						tokens[nr_token].type='*'//因为没有src 故不需要复制了
+						nr_token++;
+						break;
+					case '/':
+						tokens[nr_token].type='/';//因为没有src 故不需要复制了
+						nr_token++;
+						break;
+					case '(':
+						tokens[nr_token].type='(';//因为没有src 故不需要复制了
+						nr_token++;
+						break;
+					case ')':
+						tokens[nr_token].type=')';//因为没有src 故不需要复制了
+						nr_token++;
+						break;
 					default: panic("please implement me");
 				}
 
@@ -102,7 +161,30 @@ uint32_t expr(char *e, bool *success) {
 	}
 
 	/* TODO: Insert codes to evaluate the expression. */
+
 	panic("please implement me");
 	return 0;
+}
+int eval(Token* p,Token* q){
+	if(p>q){
+
+	}else if(p==q){
+		return p->src;
+	}
+	else if(check_parentheses(p,q)==true){
+		return eval(p+1,p-1);
+
+	}else {
+		Token *op=domi_position(p,q);
+		int val1=eval(p,op-1);
+		int val2=eval(op+1,q);
+		switch(op->type){
+			case '+': return val1+val2;
+			case '-': return val1-val2;
+			case '/': return val1/val2;
+			case '*': return val1*val2;
+			default:assert(0);
+		}
+	}
 }
 
