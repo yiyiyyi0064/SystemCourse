@@ -83,10 +83,10 @@ static int cmd_x(char *args) {
 			if(n_tmp==0){}
 			else
 			printf("\n");
-			printf("0x%08X",start_lochx+n_tmp*4);
+			printf("0x%08x",start_lochx+n_tmp*4);
 			printf(":");
 		}
-		printf("0x%08X",swaddr_read(start_lochx+n_tmp*4,4));
+		printf("0x%08x",swaddr_read(start_lochx+n_tmp*4,4));
 		printf(" ");
 
 	}
