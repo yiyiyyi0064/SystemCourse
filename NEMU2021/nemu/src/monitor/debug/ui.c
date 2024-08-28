@@ -50,10 +50,22 @@ static int cmd_si(char *args) {
 	}
 	return 0;
 }
-static int cmd_infor(char *args) {
-	int i=0;
-	for(;i<8;i++){
-		printf("%x\n",cpu.gpr[i]._32);
+static int cmd_info(char *args) {
+	char* name_reg[]={"eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi"};
+	char *instru=strtok(args," ");
+	if(*instru=='r'){
+		int i=0,j=0;
+		for(;i<8;i++){
+			printf("%s",name_reg[i]);
+			for(;j<5;j++){
+				printf(" ");
+			}
+			printf("%x",cpu.gpr[i]._32);
+			for(;j<5;j++){
+				printf(" ");
+			}
+			printf("%u\n",cpu.gpr[i]._32);
+		}
 	}
 	return 0;
 }
@@ -70,7 +82,7 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 	/* TODO: Add more commands */
 	{"si","Single execuation",cmd_si},
-	{"infor","Print the present value of the register",cmd_infor},
+	{"info","Print the present value of the register",cmd_info},
 
 };
 
