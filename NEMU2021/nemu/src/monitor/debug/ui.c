@@ -41,6 +41,7 @@ static int cmd_si(char *args) {
 	char* num_exe=strtok(args," ");
 	int num_exed;
 	if(sscanf(num_exe,"%d",&num_exed)==1){
+		printf("%d",num_exed);
 		cpu_exec(num_exed);
 	}
 	}
