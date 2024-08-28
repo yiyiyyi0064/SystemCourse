@@ -80,11 +80,13 @@ static int cmd_x(char *args) {
 	int n_tmp=0;
 	for(;n_tmp<num_checkd;n_tmp++){
 		if(n_tmp%4==0){
+			if(n_tmp==0){}
+			else
 			printf("\n");
-			printf("0x%X",start_lochx+n_tmp*4);
+			printf("0x%08X",start_lochx+n_tmp*4);
 			printf(":");
 		}
-		printf("0x%X",swaddr_read(start_lochx+n_tmp*4,4));
+		printf("0x%08X",swaddr_read(start_lochx+n_tmp*4,4));
 		printf(" ");
 
 	}
