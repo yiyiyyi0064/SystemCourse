@@ -61,7 +61,8 @@ static int cmd_info(char *args) {
 			for(;j<5;j++){
 				printf(" ");
 			}
-			printf("0x%X",cpu.gpr[i]._32);
+			printf("0x%08x",cpu.eax);
+			printf("0x%08x",cpu.gpr[i]._32);
 			j=0;
 			for(;j<5;j++){
 				printf(" ");
