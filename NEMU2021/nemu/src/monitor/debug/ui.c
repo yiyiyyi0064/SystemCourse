@@ -69,6 +69,18 @@ static int cmd_info(char *args) {
 			}
 			printf("%u\n",cpu.gpr[i]._32);
 		}
+			printf("%s","eip");
+			j=0;
+			for(;j<5;j++){
+				printf(" ");
+			}
+			//printf("0x%08x",cpu.eax);
+			printf("0x%08x",cpu.eip);
+			j=0;
+			for(;j<5;j++){
+				printf(" ");
+			}
+			printf("%u\n",cpu.eip);
 	}
 	return 0;
 }
