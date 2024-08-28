@@ -61,7 +61,7 @@ static int cmd_info(char *args) {
 			for(;j<5;j++){
 				printf(" ");
 			}
-			printf("%x",cpu.gpr[i]._32);
+			printf("0x%X",cpu.gpr[i]._32);
 			j=0;
 			for(;j<5;j++){
 				printf(" ");
@@ -71,7 +71,19 @@ static int cmd_info(char *args) {
 	}
 	return 0;
 }
-
+static int cmd_x(char *args) {
+	//char *num_check=strtok(args," ");
+	//char *start_loc=strtok(args," ");
+	int num_checkd;
+	unsigned int start_lochx;
+	sscanf(args,"%d %x",&num_checkd,&start_lochx);
+	int n_tmp=num_checkd;
+	for(;n_tmp>0;n_tmp--){
+		printf("%x",swaddr_read(start_lochx,4));
+		printf(" ");
+	}
+	return 0;
+}
 static int cmd_help(char *args);
 
 static struct {
@@ -85,7 +97,7 @@ static struct {
 	/* TODO: Add more commands */
 	{"si","Single execuation",cmd_si},
 	{"info","Print the present value of the register",cmd_info},
-
+	{"x","Print the value stored in the memory",cmd_x},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
