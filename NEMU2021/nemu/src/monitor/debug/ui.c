@@ -37,9 +37,12 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
+	if(args!=NULL){
 	char* num_exe=strtok(args," ");
 	int num_exed=atoi(num_exe);
 	cpu_exec(num_exed);
+	}
+	cpu_exec(1);
 	return 0;
 }
 
