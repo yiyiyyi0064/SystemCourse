@@ -187,4 +187,28 @@ int eval(Token* p,Token* q){
 		}
 	}
 }
+Token *domi_position(Token* p,Token* q){	
+}
+bool check_parentheses(Token* p,Token* q){
+	//principle: leftmost and rightmost should be matched.
+	char parenthe[100]={0};
+	int num_pare=0;
+	for(;p<=q;p++){
+		if(p->type=='('||p->type==')'){
+			parenthe[num_pare]=p->type;
+			num_pare++;
+		}
+	}
+	int j=num_pare-1;
+	int k=0;
+	for(;j>=0;j--){
+		if(parenthe[j]==')'&&parenthe[k]=='('){
+			k++;
+		}else{
+			return false;
+		}
+	}
+	return true;
+
+}
 
