@@ -79,8 +79,14 @@ static int cmd_x(char *args) {
 	sscanf(args,"%d %x",&num_checkd,&start_lochx);
 	int n_tmp=0;
 	for(;n_tmp<num_checkd;n_tmp++){
-		printf("%x",swaddr_read(start_lochx+n_tmp*4,4));
+		if(n_tmp%4==0){
+			printf("\n");
+			printf("0x%X",start_lochx+n_tmp*4);
+			printf(":");
+		}
+		printf("0x%X",swaddr_read(start_lochx+n_tmp*4,4));
 		printf(" ");
+
 	}
 	printf("\n");
 	return 0;
