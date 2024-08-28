@@ -39,8 +39,11 @@ static int cmd_q(char *args) {
 static int cmd_si(char *args) {
 	if(args!=NULL){
 	char* num_exe=strtok(args," ");
-	int num_exed=atoi(num_exe);
-	cpu_exec(num_exed);
+	int num_exed;
+	if(sscanf(num_exe,"%d",&num_exed)==1){
+		cpu_exec(num_exed);
+	}
+	
 	}
 	cpu_exec(1);
 	return 0;
