@@ -165,44 +165,44 @@ uint32_t expr(char *e, bool *success) {
 	panic("please implement me");
 	return 0;
 }
-Token *domi_position(Token* p,Token* q){	
+int domi_position(int p,int q){	
 	int j=0;
 	//char signal_list[100]={0};
 	
 	for(;j<=q-p;j++){
-		if((q-j)->type==')'){
+		if(tokens[q-j].type==')'){
 			for(;j<=q-p;j++){
-				if((q-j)->type=='('){
+				if(tokens[q-j].type=='('){
 					break;
 				}
 			}
 		}
-		if((q-j)->type=='+'||(q-j)->type=='-'){
+		if(tokens[q-j].type=='+'||tokens[q-j].type=='-'){
 			return q-j;
 		}
 	}
 	j=0;
 	for(;j<=q-p;j++){
-		if((q-j)->type==')'){
+		if(tokens[q-j].type==')'){
 			for(;j<=q-p;j++){
-				if((q-j)->type=='('){
+				if(tokens[q-j].type=='('){
 					break;
 				}
 			}
 		}
-		if((q-j)->type=='*'||(q-j)->type=='/'){
+		if(tokens[q-j].type=='*'||tokens[q-j].type=='/'){
 			return q-j;
 		}
 	}
 	return 0;
 }
-bool check_parentheses(Token* p,Token* q){
+bool check_parentheses(int p,int q){
 	//principle: leftmost and rightmost should be matched.
 	char parenthe[100]={0};
 	int num_pare=0;
 	for(;p<=q;p++){
-		if(p->type=='('||p->type==')'){
-			parenthe[num_pare]=p->type;
+		if(tokens[p].type=='('||tokens[p].type==')'){
+			parenthe[num_pare]=tokens[p].type;
 			num_pare++;
 		}
 	}
@@ -216,26 +216,25 @@ bool check_parentheses(Token* p,Token* q){
 		}
 	}
 	return true;
-
 }
 
 
-int eval(Token* p,Token* q){
+int eval(int p,int q){
 	if(p>q){
 		return 0;
 	}else if(p==q){
 		int result;
-		sscanf(p->str,"%d",&result);
+		sscanf(tokens[p].str,"%d",&result);
 		return result;
 	}
 	else if(check_parentheses(p,q)==true){
 		return eval(p+1,q-1);
 
 	}else {
-		Token *op=domi_position(p,q);
+		int op=domi_position(p,q);
 		int val1=eval(p,op-1);
 		int val2=eval(op+1,q);
-		switch(op->type){
+		switch(tokens[op].type){
 			case '+': return val1+val2;
 			case '-': return val1-val2;
 			case '/': return val1/val2;
