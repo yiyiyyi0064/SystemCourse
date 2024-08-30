@@ -106,6 +106,13 @@ static int cmd_x(char *args) {
 	printf("\n");
 	return 0;
 }
+/*static int cmd_p(char *args) {
+	make_token(args);
+	int result=eval(tokens[0],tokens[nr_token]);
+	return 0;
+}
+*/
+
 static int cmd_help(char *args);
 
 static struct {
@@ -120,6 +127,7 @@ static struct {
 	{"si","Single execuation",cmd_si},
 	{"info","Print the present value of the register",cmd_info},
 	{"x","Print the value stored in the memory",cmd_x},
+	//{"p","Evaluate the expression",cmd_p},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
