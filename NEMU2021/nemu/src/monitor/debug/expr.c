@@ -88,7 +88,7 @@ static bool make_token(char *e) {
 				 */
 				int j=0;
 				for(;j<32;j++){
-					tokens[nr_token].src[j]='\0'
+					tokens[nr_token].str[j]='\0';
 					//执行清空操作
 				}
 				switch(rules[i].token_type) {
@@ -96,7 +96,7 @@ static bool make_token(char *e) {
 						break;
 					case 1:
 						tokens[nr_token].type=1;
-						strncpy(tokens[nr_token].str,"==");
+						strcpy(tokens[nr_token].str,"==");
 						nr_token++;
 						break;
 					case 2:
@@ -115,27 +115,27 @@ static bool make_token(char *e) {
 						nr_token++;
 						break;
 					case '+':
-						tokens[nr_token].type='+';//因为没有src 故不需要复制了
+						tokens[nr_token].type='+';//因为没有str 故不需要复制了
 						nr_token++;
 						break;
 					case '-':
-						tokens[nr_token].type='-';//因为没有src 故不需要复制了
+						tokens[nr_token].type='-';
 						nr_token++;
 						break;
 					case '*':
-						tokens[nr_token].type='*'//因为没有src 故不需要复制了
+						tokens[nr_token].type='*';
 						nr_token++;
 						break;
 					case '/':
-						tokens[nr_token].type='/';//因为没有src 故不需要复制了
+						tokens[nr_token].type='/';
 						nr_token++;
 						break;
 					case '(':
-						tokens[nr_token].type='(';//因为没有src 故不需要复制了
+						tokens[nr_token].type='(';
 						nr_token++;
 						break;
 					case ')':
-						tokens[nr_token].type=')';//因为没有src 故不需要复制了
+						tokens[nr_token].type=')';
 						nr_token++;
 						break;
 					default: panic("please implement me");
@@ -165,29 +165,36 @@ uint32_t expr(char *e, bool *success) {
 	panic("please implement me");
 	return 0;
 }
-int eval(Token* p,Token* q){
-	if(p>q){
-
-	}else if(p==q){
-		return p->src;
-	}
-	else if(check_parentheses(p,q)==true){
-		return eval(p+1,p-1);
-
-	}else {
-		Token *op=domi_position(p,q);
-		int val1=eval(p,op-1);
-		int val2=eval(op+1,q);
-		switch(op->type){
-			case '+': return val1+val2;
-			case '-': return val1-val2;
-			case '/': return val1/val2;
-			case '*': return val1*val2;
-			default:assert(0);
+Token *domi_position(Token* p,Token* q){	
+	int j=0;
+	//char signal_list[100]={0};
+	
+	for(;j<=q-p;j++){
+		if((q-j)->type==')'){
+			for(;j<=q-p;j++){
+				if((q-j)->type=='('){
+					break;
+				}
+			}
+		}
+		if((q-j)->type=='+'||(q-j)->type=='-'){
+			return q-j;
 		}
 	}
-}
-Token *domi_position(Token* p,Token* q){	
+	j=0;
+	for(;j<=q-p;j++){
+		if((q-j)->type==')'){
+			for(;j<=q-p;j++){
+				if((q-j)->type=='('){
+					break;
+				}
+			}
+		}
+		if((q-j)->type=='*'||(q-j)->type=='/'){
+			return q-j;
+		}
+	}
+	return 0;
 }
 bool check_parentheses(Token* p,Token* q){
 	//principle: leftmost and rightmost should be matched.
@@ -212,3 +219,28 @@ bool check_parentheses(Token* p,Token* q){
 
 }
 
+
+int eval(Token* p,Token* q){
+	if(p>q){
+		return 0;
+	}else if(p==q){
+		int result;
+		sscanf(p->str,"%d",&result);
+		return result;
+	}
+	else if(check_parentheses(p,q)==true){
+		return eval(p+1,q-1);
+
+	}else {
+		Token *op=domi_position(p,q);
+		int val1=eval(p,op-1);
+		int val2=eval(op+1,q);
+		switch(op->type){
+			case '+': return val1+val2;
+			case '-': return val1-val2;
+			case '/': return val1/val2;
+			case '*': return val1*val2;
+			default:assert(0);
+		}
+	}
+}
