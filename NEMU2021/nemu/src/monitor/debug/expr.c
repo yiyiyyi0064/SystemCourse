@@ -207,7 +207,7 @@ bool check_parentheses(int p,int q){
 	}
 	int j=num_pare;
 	int k=1;
-	for(;j==k;j--){
+	for(;j!=k;j--){
 		if(parenthe[j]==')'&&parenthe[k]=='('){
 			k++;
 		}else{
