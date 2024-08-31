@@ -159,7 +159,6 @@ uint32_t expr(char *e, bool *success) {
 		*success = false;
 		return 0;
 	}
-
 	/* TODO: Insert codes to evaluate the expression. */
 	return eval(0,nr_token);
 
@@ -201,13 +200,14 @@ bool check_parentheses(int p,int q){
 	int num_pare=0;
 	for(;p<=q;p++){
 		if(tokens[p].type=='('||tokens[p].type==')'){
-			parenthe[num_pare]=tokens[p].type;
 			num_pare++;
+			parenthe[num_pare]=tokens[p].type;
+			
 		}
 	}
-	int j=num_pare-1;
-	int k=0;
-	for(;j>=0;j--){
+	int j=num_pare;
+	int k=1;
+	for(;j==k;j--){
 		if(parenthe[j]==')'&&parenthe[k]=='('){
 			k++;
 		}else{
