@@ -8,7 +8,8 @@
 #include <readline/history.h>
 
 void cpu_exec(uint32_t);
-
+int eval(int p,int q);
+int nr_token;
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
 	static char *line_read = NULL;
@@ -106,12 +107,15 @@ static int cmd_x(char *args) {
 	printf("\n");
 	return 0;
 }
-/*static int cmd_p(char *args) {
-	make_token(args);
-	int result=eval(tokens[0],tokens[nr_token]);
+static int cmd_p(char *args) {
+	bool *success =false;
+	int result=expr(args,success);
+	if(!success){
+	printf("%d\n",result);
+	}
 	return 0;
 }
-*/
+
 
 static int cmd_help(char *args);
 
@@ -127,7 +131,7 @@ static struct {
 	{"si","Single execuation",cmd_si},
 	{"info","Print the present value of the register",cmd_info},
 	{"x","Print the value stored in the memory",cmd_x},
-	//{"p","Evaluate the expression",cmd_p},
+	{"p","Evaluate the expression",cmd_p},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
