@@ -5,7 +5,7 @@
  */
 #include <sys/types.h>
 #include <regex.h>   //这是c语言自带的正则表达式的库
-
+int eval(int p,int q);
 enum {
 	NOTYPE = 256, 
 	EQ=1,
@@ -161,9 +161,8 @@ uint32_t expr(char *e, bool *success) {
 	}
 
 	/* TODO: Insert codes to evaluate the expression. */
+	return eval(0,nr_token-1);
 
-	panic("please implement me");
-	return 0;
 }
 int domi_position(int p,int q){	
 	int j=0;
