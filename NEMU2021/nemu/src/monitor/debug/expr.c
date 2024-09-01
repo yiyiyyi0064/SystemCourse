@@ -250,7 +250,7 @@ bool check_parentheses(int p,int q){
 
 int eval(int p,int q){
 	if(p>q){
-		return 0;
+		assert(0);
 	}else if(p==q){
 		int result;
 		sscanf(tokens[p].str,"%d",&result);
@@ -269,6 +269,14 @@ int eval(int p,int q){
 			case '-': return val1-val2;
 			case '/': return val1/val2;
 			case '*': return val1*val2;
+			case OR: return val1||val2;
+			case AND:return val1&&val2;
+			case EQ: 
+				if(val1==val2) return 1;
+				else return 0;
+			case NOTEQ:
+				if(val1==val2) return 0;
+				else return 1;
 			default:assert(0);
 		}
 	}
