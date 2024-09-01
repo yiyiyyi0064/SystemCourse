@@ -249,19 +249,89 @@ bool check_parentheses(int p,int q){
 
 
 int eval(int p,int q){
+	int result;
 	if(p>q){
 		assert(0);
 	}else if(p==q){
-		int result;
+		if(tokens[p].type==NUM){
 		sscanf(tokens[p].str,"%d",&result);
 		return result;
+		}else if(tokens[p].type==HEX){
+			int i=2;
+			while(tokens[p].str[i]!='\0')//从高位到低位
+			{
+				result*=16;
+				result+=tokens[p].str[i]<58?tokens[p].str[i]-'0':tokens[p].str[i]-'a'+10;//这里只默认会只有a出现
+				i++;
+				
+			}
+		}else if(tokens[p].type==REG){
+			if(!strcmp(tokens[p].str,"%eax")){
+				return cpu.eax;
+			}else if(!strcmp(tokens[p].str,"%ecx")){
+				return cpu.ecx;
+			}else if(!strcmp(tokens[p].str,"%edx")){
+				return cpu.edx;
+			}else if(!strcmp(tokens[p].str,"%ebx")){
+				return cpu.ebx;
+			}else if(!strcmp(tokens[p].str,"%esp")){
+				return cpu.esp;
+			}else if(!strcmp(tokens[p].str,"%ebp")){
+				return cpu.ebp;
+			}else if(!strcmp(tokens[p].str,"%esi")){
+				return cpu.esi;
+			}else if(!strcmp(tokens[p].str,"%edi")){
+				return cpu.edi;
+			}else if(!strcmp(tokens[p].str,"%eip")){
+				return cpu.eip;
+			}else{
+				return 0;
+			}
+		}else{
+			assert(0);
+		}
 	}
 	else if(check_parentheses(p,q)==true){
 		return eval(p+1,q-1);
-
 	}else {
 		int op=domi_position(p,q);
-		printf("%d\n",op);
+		//printf("%d\n",op);
+		if(tokens[p].type=='!'){
+			sscanf(tokens[p].str,"%d",&result);
+			return !result;
+		}else if(tokens[p].type==REG){
+			if (!strcmp(tokens[p].str, "$eax")){
+					result = cpu.eax;
+					return result;
+				} else if (!strcmp(tokens[p].str, "$ecx")){
+					result = cpu.ecx;
+					return result;
+				} else if (!strcmp(tokens[p].str, "$edx")){
+					result = cpu.edx;
+					return result;
+				} else if (!strcmp(tokens[p].str, "$ebx")){
+					result = cpu.ebx;
+					return result;
+				} else if (!strcmp(tokens[p].str, "$esp")){
+					result = cpu.esp;
+					return result;
+				} else if (!strcmp(tokens[p].str, "$ebp")){
+					result = cpu.ebp;
+					return result;
+				} else if (!strcmp(tokens[p].str, "$esi")){
+					result = cpu.esi;
+					return result;
+				} else if (!strcmp(tokens[p].str, "$edi")){
+					result = cpu.edi;
+					return result;
+				} else if (!strcmp(tokens[p].str, "$eip")){
+					result = cpu.eip;
+					return result;
+				} else {
+					assert(0);
+					return 0;
+				}
+		}
 		int val1=eval(p,op-1);
 		int val2=eval(op+1,q);
 		switch(tokens[op].type){
@@ -280,4 +350,5 @@ int eval(int p,int q){
 			default:assert(0);
 		}
 	}
+	return 0;
 }
