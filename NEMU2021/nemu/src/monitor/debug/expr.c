@@ -12,6 +12,9 @@ enum {
 	NUM=2,
 	HEX=3,
 	REG=4,
+	NOTEQ=5,
+	OR=6,
+	AND=7,
 	/* TODO: Add more token types */
 };
 
@@ -26,6 +29,10 @@ static struct rule {
 	{"[0-9]+",NUM},							//decimal
 	{"0[xX][0-9a-fA-F]+",HEX},
 	{"\\$[a-z]+",REG},
+	{"!=",NOTEQ},
+	{"\\|\\|",OR},
+	{"&&",AND},
+	{"!",'!'},
 	{"\\)",')'},
 	{"\\(",'('},
 	{"\\/",'/'},						//divide
@@ -33,7 +40,8 @@ static struct rule {
 	{"\\-",'-'},						//minor
 	{" +",	NOTYPE},				// spaces 这里用了+其实就是可以表示多个空格也可以只表示一个spaces
 	{"\\+", '+'},					// plus
-	{"==", EQ}						// equal
+	{"==", EQ}	,			// equal
+	
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -114,6 +122,21 @@ static bool make_token(char *e) {
 						strncpy(tokens[nr_token].str,&e[position-substr_len],substr_len);
 						nr_token++;
 						break;
+					case 5:
+						tokens[nr_token].type=5;
+						strcpy(tokens[nr_token].str,"!=");
+						nr_token++;
+						break;
+					case 6:
+						tokens[nr_token].type=6;
+						strcpy(tokens[nr_token].str,"||");
+						nr_token++;
+						break;
+					case 7:
+						tokens[nr_token].type=5;
+						strcpy(tokens[nr_token].str,"&&");
+						nr_token++;
+						break;
 					case '+':
 						tokens[nr_token].type='+';//因为没有str 故不需要复制了
 						nr_token++;
@@ -138,7 +161,8 @@ static bool make_token(char *e) {
 						tokens[nr_token].type=')';
 						nr_token++;
 						break;
-					default: panic("please implement me");
+					default: 
+						assert(0);
 				}
 
 				break;
@@ -207,15 +231,21 @@ bool check_parentheses(int p,int q){
 	}
 	int j=num_pare;
 	int k=1;
-	for(;j!=k;j--){
+	while(1){
+		if(j==k){
+			break;
+		}
 		if(parenthe[j]==')'&&parenthe[k]=='('){
+			j--;
 			k++;
 		}else{
 			return false;
 		}
+		}
+		return true;
 	}
-	return true;
-}
+	
+
 
 
 int eval(int p,int q){
