@@ -184,7 +184,7 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	/* TODO: Insert codes to evaluate the expression. */
-	return eval(0,nr_token);
+	return eval(0,nr_token-1);
 
 }
 int domi_position(int p,int q){	
@@ -233,7 +233,6 @@ int domi_position(int p,int q){
 		}
 	}
 	}
-	
 	return op;
 }
 bool check_parentheses(int p,int q){
