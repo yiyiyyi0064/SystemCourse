@@ -235,32 +235,30 @@ int domi_position(int p,int q){
 	}
 	return op;
 }
-bool check_parentheses(int p,int q){
-	//principle: leftmost and rightmost should be matched.
-	char parenthe[100]={0};
-	int num_pare=0;
-	for(;p<=q;p++){
-		if(tokens[p].type=='('||tokens[p].type==')'){
-			num_pare++;
-			parenthe[num_pare]=tokens[p].type;
-			
+bool check_parentheses(int p, int q){
+	int a;
+	int j = 0, k = 0;
+	if (tokens[p].type == '(' || tokens[q].type == ')'){
+		for (a = p; a <= q; a++){
+			if (tokens[a].type == '('){
+				j++;
+			}
+			if (tokens[a].type == ')'){
+				k++;
+			}
+			if (a != q && j == k){
+				return false;
+			}
 		}
+		if (j == k){
+				return true;
+			} else {
+				return false;
+			}
 	}
-	int j=num_pare;
-	int k=1;
-	while(1){
-		if(j==k||j==0){
-			break;
-		}
-		if(parenthe[j]==')'&&parenthe[k]=='('){
-			j--;
-			k++;
-		}else{
-			return false;
-		}
-		}
-		return true;
-	}
+	return false;
+}
+
 	
 
 
