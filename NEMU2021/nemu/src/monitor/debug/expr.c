@@ -232,7 +232,7 @@ bool check_parentheses(int p,int q){
 	int j=num_pare;
 	int k=1;
 	while(1){
-		if(j==k){
+		if(j==k||j==0){
 			break;
 		}
 		if(parenthe[j]==')'&&parenthe[k]=='('){
