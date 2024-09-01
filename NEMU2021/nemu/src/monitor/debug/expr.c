@@ -189,34 +189,52 @@ uint32_t expr(char *e, bool *success) {
 }
 int domi_position(int p,int q){	
 	int j=0;
+	int step=0;
+	int pri=0;
 	//char signal_list[100]={0};
+	int op=0;
+	for (j = p; j <= q; j++){
+		if (tokens[j].type == '('){
+			step++;
+		}
+		if (tokens[j].type == ')'){
+			step--;
+		}
 	
-	for(;j<=q-p;j++){
-		if(tokens[q-j].type==')'){
-			for(;j<=q-p;j++){
-				if(tokens[q-j].type=='('){
-					break;
-				}
+		if (step == 0){
+		if (tokens[j].type == OR){
+			if (pri < 9){
+				op = j;
+				pri = 9;
+			}
+		} else if (tokens[j].type == AND){
+			if (pri < 9){
+				op = j;
+				pri = 9;
+			}
+		} else if (tokens[j].type == EQ || tokens[j].type == NOTEQ){
+			if (pri < 8){
+				op = j;
+				pri = 8;
+			}
+		} else if (tokens[j].type == '+' || tokens[j].type == '-'){
+			if (pri < 7){
+				op = j;
+				pri = 7;
+			}
+		} else if (tokens[j].type == '*' || tokens[j].type == '/'){
+			if (pri < 6){
+				op = j;
+				pri = 6;
 			}
 		}
-		if(tokens[q-j].type=='+'||tokens[q-j].type=='-'){
-			return q-j;
+		else if (step < 0){
+			return -2;
 		}
 	}
-	j=0;
-	for(;j<=q-p;j++){
-		if(tokens[q-j].type==')'){
-			for(;j<=q-p;j++){
-				if(tokens[q-j].type=='('){
-					break;
-				}
-			}
-		}
-		if(tokens[q-j].type=='*'||tokens[q-j].type=='/'){
-			return q-j;
-		}
 	}
-	return 0;
+	
+	return op;
 }
 bool check_parentheses(int p,int q){
 	//principle: leftmost and rightmost should be matched.
