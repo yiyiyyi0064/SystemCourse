@@ -184,7 +184,7 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	/* TODO: Insert codes to evaluate the expression. */
-	return eval(0,nr_token-1);
+	return eval(0,nr_token);
 
 }
 int domi_position(int p,int q){	
@@ -312,7 +312,7 @@ int eval(int p,int q){
 		return eval(p+1,q-1);
 	}else {
 		int op=domi_position(p,q);
-		//printf("%d\n",op);
+		printf("%d\n",op);
 		if(tokens[p].type=='!'){
 			sscanf(tokens[p].str,"%d",&result);
 			return !result;
