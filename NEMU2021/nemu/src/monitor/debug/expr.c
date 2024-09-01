@@ -310,7 +310,7 @@ int eval(int p,int q){
 		return eval(p+1,q-1);
 	}else {
 		int op=domi_position(p,q);
-		printf("%d\n",op);
+		//printf("%d\n",op);
 		if(tokens[p].type=='!'){
 			sscanf(tokens[p].str,"%d",&result);
 			return !result;
