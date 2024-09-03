@@ -357,42 +357,6 @@ int eval(int p,int q){
 	}else {
 		int op=domi_position(p,q);
 		//printf("%d\n",op);
-		/*if(tokens[p].type=='!'){
-			sscanf(tokens[p].str,"%d",&result);
-			return !result;
-		}else if(tokens[p].type==REG){
-			if (!strcmp(tokens[p].str, "$eax")){
-					result = cpu.eax;
-					return result;
-				} else if (!strcmp(tokens[p].str, "$ecx")){
-					result = cpu.ecx;
-					return result;
-				} else if (!strcmp(tokens[p].str, "$edx")){
-					result = cpu.edx;
-					return result;
-				} else if (!strcmp(tokens[p].str, "$ebx")){
-					result = cpu.ebx;
-					return result;
-				} else if (!strcmp(tokens[p].str, "$esp")){
-					result = cpu.esp;
-					return result;
-				} else if (!strcmp(tokens[p].str, "$ebp")){
-					result = cpu.ebp;
-					return result;
-				} else if (!strcmp(tokens[p].str, "$esi")){
-					result = cpu.esi;
-					return result;
-				} else if (!strcmp(tokens[p].str, "$edi")){
-					result = cpu.edi;
-					return result;
-				} else if (!strcmp(tokens[p].str, "$eip")){
-					result = cpu.eip;
-					return result;
-				} else {
-					assert(0);
-					return 0;
-				}
-		}*/
 		int val1=eval(p,op-1);
 		int val2=eval(op+1,q);
 		switch(tokens[op].type){
