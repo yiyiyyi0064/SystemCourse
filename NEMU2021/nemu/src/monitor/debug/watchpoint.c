@@ -26,16 +26,16 @@ bool check_(){
 	int expr_tmp;
 	while(tmp!=NULL){
 		expr_tmp=expr(tmp->expr_watching,success);
-		if(expr_tmp==tmp->value_watching)//这里是发生了改变的情况
+		if(expr_tmp==tmp->value_watching)//这里是没发生改变的情况
 		{
 			tmp=tmp->next;
 			continue;
 		}else{
-			printf("Hint watchpoint %d at address 0x%08x, %s\n",tmp->NO,cpu.eip,tmp->expr_watching);
+			printf("Hint watchpoint %d at address 0x%08x\n",tmp->NO,cpu.eip);
 			check=true;
 			printf("Watchpoint %d: %s\n",tmp->NO,tmp->expr_watching);
-			printf("Old value = %d",tmp->value_watching);
-			printf("New value = %d",expr_tmp);
+			printf("Old value = %d\n",tmp->value_watching);
+			printf("New value = %d\n",expr_tmp);
 			tmp->value_watching=expr_tmp;
 			tmp=tmp->next;
 		}
@@ -99,10 +99,10 @@ void printf_watching(){
 	WP* tmp=head;
 	//开始遍历监视点
 	if(head==NULL){
-		printf("No watching points!");
+		printf("No watching points!\n");
 	}else{
 	printf("         NO              Adress               Enable\n");
-	while(tmp->next!=NULL){
+	while(tmp!=NULL){
 	printf("  %d        %s          %d\n",tmp->NO,tmp->expr_watching,tmp->value_watching);
 		tmp=tmp->next;
 	}
