@@ -10,6 +10,9 @@
 void cpu_exec(uint32_t);
 int eval(int p,int q);
 int nr_token;
+void printf_watching();
+void free_wp(WP* wp);
+WP* new_wp();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
 	static char *line_read = NULL;
@@ -82,25 +85,33 @@ static int cmd_info(char *args) {
 				printf(" ");
 			}
 			printf("%u\n",cpu.eip);
+	}else if(*instru=='w'){
+		printf_watching();
+		return 0;
+		//char *adress_=strtok(args," ");
+		//cmd_w(adress_);
 	}
 	return 0;
 }
 static int cmd_x(char *args) {
-	//char *num_check=strtok(args," ");
-	//char *start_loc=strtok(args," ");
-	int num_checkd;
-	unsigned int start_lochx;
-	sscanf(args,"%d %x",&num_checkd,&start_lochx);
+	char *num_check=strtok(args," ");
+	char *start_loc=strtok(args," ");
+	bool *success =false;
+	int result_num=expr(num_check,success);
+	uint32_t result_start=expr(start_loc,success);
+	//int num_checkd;
+	//unsigned int start_lochx;
+	//sscanf(args,"%d %x",&num_checkd,&start_lochx);
 	int n_tmp=0;
-	for(;n_tmp<num_checkd;n_tmp++){
+	for(;n_tmp<result_num;n_tmp++){
 		if(n_tmp%4==0){
 			if(n_tmp==0){}
 			else
 			printf("\n");
-			printf("0x%08x",start_lochx+n_tmp*4);
+			printf("0x%08x",result_start+n_tmp*4);
 			printf(":");
 		}
-		printf("0x%08x",swaddr_read(start_lochx+n_tmp*4,4));
+		printf("0x%08x",swaddr_read(result_start+n_tmp*4,4));
 		printf(" ");
 
 	}
@@ -115,7 +126,27 @@ static int cmd_p(char *args) {
 	}
 	return 0;
 }
-
+static int cmd_w(char *args) {
+	WP* new_dot=new_wp();//申请空闲监视点结构
+	//这里犯了个错误 应该直接保存expr
+	new_dot->expr_watching=args;
+	printf("Watching Point %d: %s\n",new_dot->NO,new_dot->expr_watching);
+	return 0;
+}
+/*static int cmd_d(char *args) {
+	char* num_del=strtok(args," ");
+	int num_d;
+	sscanf(num_del,"%d",&num_d);
+	WP* tmp_=head;
+	while(tmp_->next!=NULL){
+		if(tmp_->NO==num_d){
+			break;
+		}
+		tmp_=tmp_->next;
+	}
+	free_wp(tmp_);
+	return 0;
+}*/
 
 static int cmd_help(char *args);
 
@@ -132,6 +163,8 @@ static struct {
 	{"info","Print the present value of the register",cmd_info},
 	{"x","Print the value stored in the memory",cmd_x},
 	{"p","Evaluate the expression",cmd_p},
+	{"w","Add a watching point.",cmd_w},
+	//{"d","Delete the watching point.",cmd_d},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
