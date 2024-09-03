@@ -103,7 +103,7 @@ void printf_watching(){
 	}else{
 	printf("         NO              Adress               Enable\n");
 	while(tmp->next!=NULL){
-	printf("         %d              %s                    %d\n",tmp->NO,tmp->expr_watching,tmp->value_watching);
+	printf("  %d        %s          %d\n",tmp->NO,tmp->expr_watching,tmp->value_watching);
 		tmp=tmp->next;
 	}
 	}
