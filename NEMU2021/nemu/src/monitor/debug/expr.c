@@ -26,21 +26,26 @@ static struct rule {
 	/* TODO: Add more rules.
 	 * Pay attention to the precedence level of different rules.
 	 */
+	{" +",	NOTYPE},
+
+	{"\\-",'-'},						//minor
+	{"\\+", '+'},
+	{"\\/",'/'},						//divide
+	{"\\*",'*'},						//multiple
+	
 	{"\\$[a-z]+",REG},							//decimal
 	{"0[xX][0-9a-fA-F]+",HEX},
 	{"[0-9]+",NUM},
 	
-	{"\\|\\|",OR},
-	{"&&",AND},
+	{"==", EQ},	
+	{"!=",NOTEQ},
+
+	
 	{"\\)",')'},
 	{"\\(",'('},
-	{"\\/",'/'},						//divide
-	{"\\*",'*'},						//multiple
-	{"\\-",'-'},						//minor
-	{" +",	NOTYPE},				// spaces 这里用了+其实就是可以表示多个空格也可以只表示一个spaces
-	{"\\+", '+'},					// plus
-	{"==", EQ}	,	
-	{"!=",NOTEQ},
+			
+	{"\\|\\|",OR},
+	{"&&",AND},
 	{"!",'!'},		// equal
 	
 };
