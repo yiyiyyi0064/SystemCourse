@@ -281,23 +281,23 @@ int eval(int p,int q){
 			}
 			return result;
 		}else if(tokens[p].type==REG){
-			if(!strcmp(tokens[p].str,"%eax")){
+			if(!strcmp(tokens[p].str,"$eax")){
 				return cpu.eax;
-			}else if(!strcmp(tokens[p].str,"%ecx")){
+			}else if(!strcmp(tokens[p].str,"$ecx")){
 				return cpu.ecx;
-			}else if(!strcmp(tokens[p].str,"%edx")){
+			}else if(!strcmp(tokens[p].str,"$edx")){
 				return cpu.edx;
-			}else if(!strcmp(tokens[p].str,"%ebx")){
+			}else if(!strcmp(tokens[p].str,"$ebx")){
 				return cpu.ebx;
-			}else if(!strcmp(tokens[p].str,"%esp")){
+			}else if(!strcmp(tokens[p].str,"$esp")){
 				return cpu.esp;
-			}else if(!strcmp(tokens[p].str,"%ebp")){
+			}else if(!strcmp(tokens[p].str,"$ebp")){
 				return cpu.ebp;
-			}else if(!strcmp(tokens[p].str,"%esi")){
+			}else if(!strcmp(tokens[p].str,"$esi")){
 				return cpu.esi;
-			}else if(!strcmp(tokens[p].str,"%edi")){
+			}else if(!strcmp(tokens[p].str,"$edi")){
 				return cpu.edi;
-			}else if(!strcmp(tokens[p].str,"%eip")){
+			}else if(!strcmp(tokens[p].str,"$eip")){
 				return cpu.eip;
 			}else{
 				return 0;
