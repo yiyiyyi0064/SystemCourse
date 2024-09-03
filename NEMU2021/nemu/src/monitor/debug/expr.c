@@ -29,10 +29,9 @@ static struct rule {
 	{"\\$[a-z]+",REG},							//decimal
 	{"0[xX][0-9a-fA-F]+",HEX},
 	{"[0-9]+",NUM},
-	{"!=",NOTEQ},
+	
 	{"\\|\\|",OR},
 	{"&&",AND},
-	{"!",'!'},
 	{"\\)",')'},
 	{"\\(",'('},
 	{"\\/",'/'},						//divide
@@ -40,7 +39,9 @@ static struct rule {
 	{"\\-",'-'},						//minor
 	{" +",	NOTYPE},				// spaces 这里用了+其实就是可以表示多个空格也可以只表示一个spaces
 	{"\\+", '+'},					// plus
-	{"==", EQ}	,			// equal
+	{"==", EQ}	,	
+	{"!=",NOTEQ},
+	{"!",'!'},		// equal
 	
 };
 
