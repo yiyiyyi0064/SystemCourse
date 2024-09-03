@@ -357,7 +357,7 @@ int eval(int p,int q){
 	}else {
 		int op=domi_position(p,q);
 		//printf("%d\n",op);
-		if(tokens[p].type=='!'){
+		/*if(tokens[p].type=='!'){
 			sscanf(tokens[p].str,"%d",&result);
 			return !result;
 		}else if(tokens[p].type==REG){
@@ -392,7 +392,7 @@ int eval(int p,int q){
 					assert(0);
 					return 0;
 				}
-		}
+		}*/
 		int val1=eval(p,op-1);
 		int val2=eval(op+1,q);
 		switch(tokens[op].type){
