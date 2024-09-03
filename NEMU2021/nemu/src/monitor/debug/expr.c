@@ -203,29 +203,29 @@ int domi_position(int p,int q){
 	
 		if (step == 0){
 		if (tokens[j].type == OR){
-			if (pri < 51){
+			if (pri < 9){
 				op = j;
-				pri = 51;
+				pri = 9;
 			}
 		} else if (tokens[j].type == AND){
-			if (pri < 50){
+			if (pri < 8){
 				op = j;
-				pri = 50;
+				pri = 8;
 			}
 		} else if (tokens[j].type == EQ || tokens[j].type == NOTEQ){
-			if (pri < 49){
+			if (pri < 7){
 				op = j;
-				pri = 49;
+				pri = 7;
 			}
 		} else if (tokens[j].type == '+' || tokens[j].type == '-'){
-			if (pri < 48){
+			if (pri <6){
 				op = j;
-				pri = 48;
+				pri = 6;
 			}
 		} else if (tokens[j].type == '*' || tokens[j].type == '/'){
-			if (pri < 47){
+			if (pri < 5){
 				op = j;
-				pri = 47;
+				pri = 5;
 			}
 		}
 		else if (step < 0){
