@@ -43,7 +43,7 @@ static int cmd_q(char *args) {
 
 static int cmd_si(char *args) {
 	if(args!=NULL){
-	char* num_exe=strtok(args," ");
+	char* num_exe=strtok(NULL," ");
 	int num_exed;
 	if(sscanf(num_exe,"%d",&num_exed)==1){
 		//printf("%d",num_exed); 
