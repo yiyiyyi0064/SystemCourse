@@ -95,24 +95,24 @@ static int cmd_info(char *args) {
 	return 0;
 }
 static int cmd_x(char *args) {
-	char *num_check=strtok(args," ");
-	char *start_loc=strtok(args," ");
-	bool *success =false;
-	int result_num=expr(num_check,success);
-	uint32_t result_start=expr(start_loc,success);
-	//int num_checkd;
-	//unsigned int start_lochx;
-	//sscanf(args,"%d %x",&num_checkd,&start_lochx);
+	//char *num_check=strtok(NULL," ");
+	//char *start_loc=strtok(NULL," ");
+	//bool *success =false;
+	//int result_num=expr(num_check,success);
+	//uint32_t result_start=expr(start_loc,success);
+	int num_checkd;
+	unsigned int start_lochx;
+	sscanf(args,"%d %x",&num_checkd,&start_lochx);
 	int n_tmp=0;
-	for(;n_tmp<result_num;n_tmp++){
+	for(;n_tmp<num_checkd;n_tmp++){
 		if(n_tmp%4==0){
 			if(n_tmp==0){}
 			else
 			printf("\n");
-			printf("0x%08x",result_start+n_tmp*4);
+			printf("0x%08x",start_lochx+n_tmp*4);
 			printf(":");
 		}
-		printf("0x%08x",swaddr_read(result_start+n_tmp*4,4));
+		printf("0x%08x",swaddr_read(start_lochx+n_tmp*4,4));
 		printf(" ");
 
 	}
