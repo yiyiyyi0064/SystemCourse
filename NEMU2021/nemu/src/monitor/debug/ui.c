@@ -144,7 +144,7 @@ static int cmd_d(char *args) {
 		free_wp(addr_d);
 		return 0;
 	}else{
-		printf("Watchpoint #%d does not exist",num_d);
+		printf("Watchpoint #%d does not exist\n",num_d);
 		return 0;
 	}
 	return 0;
