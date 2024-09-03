@@ -293,30 +293,57 @@ int eval(int p,int q){
 		}else if(tokens[p].type==REG){
 			if(!strcmp(tokens[p].str,"$eax")){
 				result =cpu.eax;
+				if(cpu.eax==0){
+					return 0;
+				}
 				return result;
 			}else if(!strcmp(tokens[p].str,"$ecx")){
 				result =cpu.ecx;
+				if(cpu.ecx==0){
+					return 0;
+				}
 				return result;
 			}else if(!strcmp(tokens[p].str,"$edx")){
 				result =cpu.edx;
+				if(cpu.edx==0){
+					return 0;
+				}
 				return result;
 			}else if(!strcmp(tokens[p].str,"$ebx")){
 				result =cpu.ebx;
+				if(cpu.ebx==0){
+					return 0;
+				}
 				return result;
 			}else if(!strcmp(tokens[p].str,"$esp")){
 				result =cpu.esp;
+				if(cpu.esp==0){
+					return 0;
+				}
 				return result;
 			}else if(!strcmp(tokens[p].str,"$ebp")){
 				result =cpu.ebp;
+				if(cpu.ebp==0){
+					return 0;
+				}
 				return result;
 			}else if(!strcmp(tokens[p].str,"$esi")){
 				result =cpu.esi;
+				if(cpu.esi==0){
+					return 0;
+				}
 				return result;
 			}else if(!strcmp(tokens[p].str,"$edi")){
 				result =cpu.edi;
+				if(cpu.edi==0){
+					return 0;
+				}
 				return result;
 			}else if(!strcmp(tokens[p].str,"$eip")){
 				result =cpu.eip;
+				if(cpu.eip==0){
+					return 0;
+				}
 				return result;
 			}else{
 				return 0;
