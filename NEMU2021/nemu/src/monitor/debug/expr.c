@@ -27,7 +27,7 @@ static struct rule {
 	 * Pay attention to the precedence level of different rules.
 	 */
 	{"[0-9]+",NUM},							//decimal
-	{"[0][x][0-9a-fA-F]+",HEX},
+	{"0[xX][0-9a-fA-F]+",HEX},
 	{"\\$[a-z]+",REG},
 	{"!=",NOTEQ},
 	{"\\|\\|",OR},
@@ -203,29 +203,29 @@ int domi_position(int p,int q){
 	
 		if (step == 0){
 		if (tokens[j].type == OR){
-			if (pri < 9){
+			if (pri < 51){
 				op = j;
-				pri = 9;
+				pri = 51;
 			}
 		} else if (tokens[j].type == AND){
-			if (pri < 9){
+			if (pri < 50){
 				op = j;
-				pri = 9;
+				pri = 50;
 			}
 		} else if (tokens[j].type == EQ || tokens[j].type == NOTEQ){
-			if (pri < 8){
+			if (pri < 49){
 				op = j;
-				pri = 8;
+				pri = 49;
 			}
 		} else if (tokens[j].type == '+' || tokens[j].type == '-'){
-			if (pri < 7){
+			if (pri < 48){
 				op = j;
-				pri = 7;
+				pri = 48;
 			}
 		} else if (tokens[j].type == '*' || tokens[j].type == '/'){
-			if (pri < 6){
+			if (pri < 47){
 				op = j;
-				pri = 6;
+				pri = 47;
 			}
 		}
 		else if (step < 0){
@@ -264,7 +264,7 @@ bool check_parentheses(int p, int q){
 
 
 int eval(int p,int q){
-	int result;
+	int result=0;
 	if(p>q){
 		assert(0);
 	}else if(p==q){
@@ -278,8 +278,9 @@ int eval(int p,int q){
 				result*=16;
 				result+=tokens[p].str[i]<58?tokens[p].str[i]-'0':tokens[p].str[i]-'a'+10;//这里只默认会只有a出现
 				i++;
-				
+				return result;
 			}
+
 		}else if(tokens[p].type==REG){
 			if(!strcmp(tokens[p].str,"%eax")){
 				return cpu.eax;
