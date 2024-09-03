@@ -26,9 +26,9 @@ static struct rule {
 	/* TODO: Add more rules.
 	 * Pay attention to the precedence level of different rules.
 	 */
-	{"[0-9]+",NUM},							//decimal
-	{"^0[xX][0-9a-fA-F]+$",HEX},
-	{"\\$[a-z]+",REG},
+	{"\\$[a-z]+",REG},							//decimal
+	{"0[xX][0-9a-fA-F]+",HEX},
+	{"[0-9]+",NUM},
 	{"!=",NOTEQ},
 	{"\\|\\|",OR},
 	{"&&",AND},
