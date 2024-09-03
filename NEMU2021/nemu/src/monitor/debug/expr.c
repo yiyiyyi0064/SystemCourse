@@ -26,7 +26,7 @@ static struct rule {
 	/* TODO: Add more rules.
 	 * Pay attention to the precedence level of different rules.
 	 */
-	{"[0-9]+",NUM},							//decimal
+	{"[1-9][0-9]+",NUM},							//decimal
 	{"0[xX][0-9a-fA-F]+",HEX},
 	{"\\$[a-z]+",REG},
 	{"!=",NOTEQ},
@@ -74,7 +74,7 @@ Token tokens[32];
 int nr_token;
 
 static bool make_token(char *e) {
-	int position = 0;
+	int position=0 ;
 	int i;
 	regmatch_t pmatch;
 	
