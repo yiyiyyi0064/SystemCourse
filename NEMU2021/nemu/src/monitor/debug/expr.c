@@ -278,9 +278,8 @@ int eval(int p,int q){
 				result*=16;
 				result+=tokens[p].str[i]<58?tokens[p].str[i]-'0':tokens[p].str[i]-'a'+10;//这里只默认会只有a出现
 				i++;
-				
 			}
-
+			return result;
 		}else if(tokens[p].type==REG){
 			if(!strcmp(tokens[p].str,"%eax")){
 				return cpu.eax;
