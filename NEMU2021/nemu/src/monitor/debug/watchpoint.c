@@ -1,6 +1,6 @@
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
-
+#include "cpu/reg.h"
 #define NR_WP 32
 
 static WP wp_pool[NR_WP];
@@ -19,16 +19,31 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
-/*{
+bool check_(){
 	bool check=false;
 	bool *success=false;
 	WP* tmp=head;
+	int expr_tmp;
 	while(tmp!=NULL){
-
+		expr_tmp=expr(tmp->expr_watching,success);
+		if(expr_tmp==tmp->value_watching)//这里是发生了改变的情况
+		{
+			tmp=tmp->next;
+			continue;
+		}else{
+			printf("Hint watchpoint %d at address 0x%08x, %s\n",tmp->NO,cpu.eip,tmp->expr_watching);
+			check=true;
+			printf("Watchpoint %d: %s\n",tmp->NO,tmp->expr_watching);
+			printf("Old value = %d",tmp->value_watching);
+			printf("New value = %d",expr_tmp);
+			tmp->value_watching=expr_tmp;
+			tmp=tmp->next;
+		}
+		
 	}
-	return false;
+	return check;
 }
-*/
+
 WP* new_wp(){
 	//free_  闲置列表 head 使用列表
 	WP* tmp1=free_ ;//从尾部取出闲置
@@ -85,10 +100,12 @@ void printf_watching(){
 	//开始遍历监视点
 	if(head==NULL){
 		printf("No watching points!");
-	}
+	}else{
+	printf("         NO              Adress               Enable");
 	while(tmp->next!=NULL){
-		printf("Hint watchpoint %d at address %s\n",tmp->NO,tmp->expr_watching);
+	printf("         %d              %s                    %d\n",tmp->NO,tmp->expr_watching,tmp->value_watching);
 		tmp=tmp->next;
+	}
 	}
 }
 WP* delete_wp(int p,bool *key){

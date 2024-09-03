@@ -10,6 +10,7 @@
 void cpu_exec(uint32_t);
 int eval(int p,int q);
 int nr_token;
+WP* delete_wp(int p,bool *key);
 void printf_watching();
 void free_wp(WP* wp);
 WP* new_wp();
@@ -130,23 +131,24 @@ static int cmd_w(char *args) {
 	WP* new_dot=new_wp();//申请空闲监视点结构
 	//这里犯了个错误 应该直接保存expr
 	new_dot->expr_watching=args;
-	printf("Watching Point %d: %s\n",new_dot->NO,new_dot->expr_watching);
+	printf("Set Watchpoint #%d: %s\n",new_dot->NO,new_dot->expr_watching);
 	return 0;
 }
-/*static int cmd_d(char *args) {
+static int cmd_d(char *args) {
 	char* num_del=strtok(args," ");
 	int num_d;
+	bool key=true;
 	sscanf(num_del,"%d",&num_d);
-	WP* tmp_=head;
-	while(tmp_->next!=NULL){
-		if(tmp_->NO==num_d){
-			break;
-		}
-		tmp_=tmp_->next;
+	WP* addr_d=delete_wp(num_d,&key);
+	if(key){
+		free_wp(addr_d);
+		return 0;
+	}else{
+		printf("Watchpoint #%d does not exist",num_d);
+		return 0;
 	}
-	free_wp(tmp_);
 	return 0;
-}*/
+}
 
 static int cmd_help(char *args);
 
@@ -164,7 +166,7 @@ static struct {
 	{"x","Print the value stored in the memory",cmd_x},
 	{"p","Evaluate the expression",cmd_p},
 	{"w","Add a watching point.",cmd_w},
-	//{"d","Delete the watching point.",cmd_d},
+	{"d","Delete the watching point.",cmd_d},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
