@@ -45,18 +45,41 @@ bool check_(){
 }
 
 static WP* new_wp(){
-	assert(free_ != NULL);
-	WP *p = free_;
+	WP *temp;
+	temp = free_;
 	free_ = free_->next;
-	return p;
+	temp->next = NULL;
+	if (head == NULL){
+		head = temp;
+	} else {
+		WP* temp2;
+		temp2 = head;
+		while (temp2->next != NULL){
+			temp2 = temp2->next;
+		}
+		temp2->next = temp;
+	}
+	return temp;
 }
 //这个就更是考验基本的链表清空操作了
 //分情况讨论 
-void free_wp(WP* p){
-	assert(p >= wp_pool && p < wp_pool + NR_WP);
-	free(p->expr_watching);
-	p->next = free_;
-	free_ = p;
+void free_wp(WP* wp){
+	if (wp == NULL){
+		assert(0);
+	}
+	if (wp == head){
+		head = head->next;
+	} else {
+		WP* temp = head;
+		while (temp != NULL && temp->next != wp){
+			temp = temp->next;
+		}
+		temp->next = temp->next->next;
+	}
+	wp->next =free_;
+	free_ = wp;
+	wp->value_watching = 0;
+	wp->expr_watching[0] = '\0';
 }
 
 void printf_watching(){
@@ -92,7 +115,5 @@ WP* set_watchpoint(char *args){
 	//printf("%s\n",tmp->expr_watching);
 	//printf("%d\n",val);
 	tmp->value_watching=val;
-	tmp->next=head;
-	head=tmp;
 	return tmp;
 }
