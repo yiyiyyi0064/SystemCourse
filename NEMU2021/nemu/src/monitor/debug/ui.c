@@ -142,6 +142,7 @@ static int cmd_d(char *args) {
 	sscanf(num_del,"%d",&num_d);
 	WP* addr_d=delete_wp(num_d,&key);
 	if(key){
+		printf("%s\n",addr_d->expr_watching);
 		free_wp(addr_d);
 		return 0;
 	}else{
