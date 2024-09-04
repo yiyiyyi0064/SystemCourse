@@ -3,7 +3,7 @@
 #include "cpu/reg.h"
 #define NR_WP 32
 
-WP wp_pool[NR_WP];
+static WP wp_pool[NR_WP];
 static WP *head, *free_;
 
 void init_wp_pool() {
@@ -124,6 +124,7 @@ WP* set_watchpoint(char *args){
 	val=expr(args,success);
 	WP* tmp=new_wp();
 	tmp->expr_watching=args;
+	printf("%s\n",tmp->expr_watching);
 	tmp->value_watching=val;
 	return tmp;
 }
