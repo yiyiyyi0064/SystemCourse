@@ -44,7 +44,7 @@ bool check_(){
 }
 
 
-static WP* new_wp(){
+WP* new_wp(){
 	WP *temp;
 	temp = free_;
 	free_ = free_->next;
