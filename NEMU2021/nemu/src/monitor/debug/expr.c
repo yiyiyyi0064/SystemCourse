@@ -279,10 +279,6 @@ bool check_parentheses(int p, int q){
 	return false;
 }
 
-	
-
-
-
 int eval(int p,int q){
 	int result=0;
 	if(p>q){
