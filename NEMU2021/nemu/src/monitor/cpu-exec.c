@@ -14,7 +14,7 @@ int exec(swaddr_t);
 //bool check_();
 char assembly[80];
 char asm_buf[128];
-bool checkWP();
+bool check_();
 /* Used with exception handling. */
 jmp_buf jbuf;
 
@@ -72,7 +72,7 @@ void cpu_exec(volatile uint32_t n) {
 #endif
 
 		/* TODO: check watchpoints here. */
-		bool ifchange=checkWP();
+		bool ifchange=check_();
 		if(ifchange){
 			nemu_state=STOP;
 		}

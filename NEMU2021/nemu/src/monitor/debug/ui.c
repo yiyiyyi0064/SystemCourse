@@ -8,7 +8,7 @@
 #include <readline/history.h>
 
 void cpu_exec(uint32_t);
-int eval(int p,int q);
+uint32_t eval(int p,int q);
 int nr_token;
 WP* delete_wp(int p,bool *key);
 void printf_watching();

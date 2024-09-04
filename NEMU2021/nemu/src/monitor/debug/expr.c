@@ -5,7 +5,7 @@
  */
 #include <sys/types.h>
 #include <regex.h>   //这是c语言自带的正则表达式的库
-int eval(int p,int q);
+uint32_t eval(int p,int q);
 enum {
 	NOTYPE = 256, 
 	EQ=1,
@@ -279,7 +279,7 @@ bool check_parentheses(int p, int q){
 	return false;
 }
 
-int eval(int p,int q){
+uint32_t eval(int p,int q){
 	int result=0;
 	if(p>q){
 		assert(0);

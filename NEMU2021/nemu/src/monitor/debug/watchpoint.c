@@ -19,7 +19,7 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
-bool checkWP(){
+bool check_(){
 	bool check = false;
 	bool *success = false;
 	WP *temp = head;
