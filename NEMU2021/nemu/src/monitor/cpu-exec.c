@@ -11,7 +11,6 @@
 
 int nemu_state = STOP;
 int exec(swaddr_t);
-//bool check_();
 char assembly[80];
 char asm_buf[128];
 bool check_();
@@ -20,6 +19,7 @@ jmp_buf jbuf;
 
 void print_bin_instr(swaddr_t eip, int len) {
 	int i;
+	
 	int l = sprintf(asm_buf, "%8x:   ", eip);
 	for(i = 0; i < len; i ++) {
 		l += sprintf(asm_buf + l, "%02x ", instr_fetch(eip + i, 1));
