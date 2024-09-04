@@ -44,22 +44,52 @@ bool check_(){
 }
 
 
-WP* new_wp(){
-	WP *temp;
-	temp = free_;
-	free_ = free_->next;
-	temp->next = NULL;
-	if (head == NULL){
-		head = temp;
-	} else {
-		WP* temp2;
-		temp2 = head;
-		while (temp2->next != NULL){
-			temp2 = temp2->next;
-		}
-		temp2->next = temp;
-	}
-	return temp;
+ WP* new_wp(){
+
+  //free_  闲置列表 head 使用列表
+
+  WP* tmp1=free_ ;//从尾部取出闲置
+
+  free_=free_->next;//free链表指向新的闲置
+
+  tmp1->next=NULL;
+
+  if(head==NULL){
+
+//head为空 那么直接插入即可
+head=tmp1;
+
+  }else{
+//否则需要遍历找到尾部 插入
+//需要注意一点的是 并不是用i去遍历（这是物理上的） 
+
+//而是在链表的逻辑上next遍历
+WP* tmp2;
+tmp2=head;//遍历起点
+while(tmp2->next!=NULL){
+tmp2=tmp2->next;
+
+}
+tmp2->next=tmp1;//此时tmp2是head使用列表的最后一个 在这里尾插新的链表
+
+  }
+
+  return tmp1;//这里以及成功插入head 返回新插入的可使用列表
+
+  /*for(i=0;i<NR_WP;i++){
+
+​    if(wp_pool[i].addr_watching==0){
+
+​      return wp_pool[i];
+
+​    }
+
+​    assert(0);
+
+  }
+
+  */
+
 }
 //这个就更是考验基本的链表清空操作了
 //分情况讨论 
