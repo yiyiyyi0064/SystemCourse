@@ -130,6 +130,7 @@ static int cmd_p(char *args) {
 static int cmd_w(char *args) {
 	WP* new_dot=new_wp();//申请空闲监视点结构
 	//这里犯了个错误 应该直接保存expr
+	args += strspn(args, " ");
 	new_dot->expr_watching=args;
 	printf("Set Watchpoint #%d: %s\n",new_dot->NO,new_dot->expr_watching);
 	return 0;
