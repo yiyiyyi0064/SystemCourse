@@ -125,6 +125,7 @@ WP* set_watchpoint(char *args){
 	WP* tmp=new_wp();
 	tmp->expr_watching=args;
 	printf("%s\n",tmp->expr_watching);
+	printf("%d\n",val);
 	tmp->value_watching=val;
 	return tmp;
 }
