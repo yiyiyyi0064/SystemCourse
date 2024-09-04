@@ -25,9 +25,8 @@ bool check_(){
 	bool check = false;
 	bool *success = false;
 	WP *temp = head;
-	int expr_temp=0;
+	int expr_temp;
 	while(temp != NULL){
-		//printf("%s\n",temp->expr_watching);
 		expr_temp = expr(temp->expr_watching, success);
 		if (expr_temp != temp->value_watching){
 			check = true;
@@ -43,6 +42,7 @@ bool check_(){
 	}
 	return check;
 }
+
 
 static WP* new_wp(){
 	WP *temp;
