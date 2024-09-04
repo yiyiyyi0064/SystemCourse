@@ -92,5 +92,7 @@ WP* set_watchpoint(char *args){
 	//printf("%s\n",tmp->expr_watching);
 	//printf("%d\n",val);
 	tmp->value_watching=val;
+	tmp->next=head;
+	head=tmp;
 	return tmp;
 }
