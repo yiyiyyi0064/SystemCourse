@@ -26,7 +26,7 @@ bool check_(){
 	WP *temp = head;
 	int expr_temp;
 	while(temp != NULL){
-		printf("%s\n",temp->expr_watching);
+		//printf("%s\n",temp->expr_watching);
 		expr_temp = expr(temp->expr_watching, success);
 		if (expr_temp != temp->value_watching){
 			check = true;
@@ -117,4 +117,13 @@ WP* delete_wp(int p,bool *key){
 		*key=false;
 	}
 	return tmp;//no号的节点没有返回 从列表中消失了
+}
+WP* set_watchpoint(char *args){
+	uint32_t val;
+	bool*success=false;
+	val=expr(args,success);
+	WP* tmp=new_wp();
+	tmp->expr_watching=args;
+	tmp->value_watching=val;
+	return tmp;
 }

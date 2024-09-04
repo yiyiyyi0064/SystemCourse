@@ -13,6 +13,7 @@ int nr_token;
 WP* delete_wp(int p,bool *key);
 void printf_watching();
 void free_wp(WP* wp);
+WP* set_watchpoint(char *args);
 WP* new_wp();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
@@ -128,10 +129,12 @@ static int cmd_p(char *args) {
 	return 0;
 }
 static int cmd_w(char *args) {
-	WP* new_dot=new_wp();//申请空闲监视点结构
+	//WP* new_dot=new_wp();//申请空闲监视点结构
 	//这里犯了个错误 应该直接保存expr
 	args += strspn(args, " ");
-	new_dot->expr_watching=args;
+	WP* new_dot=set_watchpoint(args);
+	//new_dot->expr_watching=args;
+	//这里的NO是本来就有的 并不是后来添加的 后来添加的只有expr
 	printf("Set Watchpoint #%d: %s\n",new_dot->NO,new_dot->expr_watching);
 	return 0;
 }
@@ -142,7 +145,7 @@ static int cmd_d(char *args) {
 	sscanf(num_del,"%d",&num_d);
 	WP* addr_d=delete_wp(num_d,&key);
 	if(key){
-		printf("%s\n",addr_d->expr_watching);
+		//printf("%s\n",addr_d->expr_watching);
 		free_wp(addr_d);
 		return 0;
 	}else{
