@@ -15,6 +15,7 @@ enum {
 	NOTEQ=5,
 	OR=6,
 	AND=7,
+	//POINT,NEG,
 	/* TODO: Add more token types */
 };
 
@@ -199,7 +200,7 @@ uint32_t expr(char *e, bool *success) {
 }
 int domi_position(int p,int q){	
 	int j=0;
-	int step=0;
+	int step=-1;
 	int pri=0;
 	//char signal_list[100]={0};
 	int op=0;

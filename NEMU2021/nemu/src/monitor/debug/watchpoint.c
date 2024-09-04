@@ -19,27 +19,25 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
-bool check_(){
-	bool check=false;
-	bool *success=false;
-	WP* tmp=head;
-	int expr_tmp;
-	while(tmp!=NULL){
-		expr_tmp=expr(tmp->expr_watching,success);
-		if(expr_tmp==tmp->value_watching)//这里是没发生改变的情况
-		{
-			tmp=tmp->next;
+bool checkWP(){
+	bool check = false;
+	bool *success = false;
+	WP *temp = head;
+	int expr_temp;
+	while(temp != NULL){
+		printf("%s\n",temp->expr_watching);
+		expr_temp = expr(temp->expr_watching, success);
+		if (expr_temp != temp->value_watching){
+			check = true;
+			printf ("Hint watchpoint %d at address 0x%08x\n", temp->NO, cpu.eip);
+			temp = temp->next;
 			continue;
-		}else{
-			printf("Hint watchpoint %d at address 0x%08x\n",tmp->NO,cpu.eip);
-			check=true;
-			printf("Watchpoint %d: %s\n",tmp->NO,tmp->expr_watching);
-			printf("Old value = %d\n",tmp->value_watching);
-			printf("New value = %d\n",expr_tmp);
-			tmp->value_watching=expr_tmp;
-			tmp=tmp->next;
 		}
-		
+		printf ("Watchpoint %d: %s\n",temp->NO,temp->expr_watching);
+		printf ("Old value = %d\n",temp->value_watching);
+		printf ("New value = %d\n",expr_temp);
+		temp->value_watching = expr_temp;
+		temp = temp->next;
 	}
 	return check;
 }
@@ -82,7 +80,7 @@ void free_wp(WP* wp){
 	}else{
 		//先找到wp 找到指向wp的节点
 		WP* tmp=head;
-		while(tmp->next!=wp){
+		while(tmp->next!=wp&&tmp!=NULL){
 			tmp=tmp->next;
 		}
 		//此时tmp下一个是wp
@@ -91,7 +89,7 @@ void free_wp(WP* wp){
 	//这里用头插法插到free_中
 	wp->next=free_;
 	free_=wp;//之前的头成功变为wp的下一个
-	wp->expr_watching='\0';
+	wp->expr_watching[0]='\0';
 	wp->value_watching=0;
 }
 
@@ -101,7 +99,7 @@ void printf_watching(){
 	if(head==NULL){
 		printf("No watching points!\n");
 	}else{
-	printf("         NO              Adress               Enable\n");
+	printf("         NO              Address               Enable\n");
 	while(tmp!=NULL){
 	printf("%d        %s          %d\n",tmp->NO,tmp->expr_watching,tmp->value_watching);
 		tmp=tmp->next;
