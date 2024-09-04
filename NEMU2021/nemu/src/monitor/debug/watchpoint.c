@@ -24,7 +24,7 @@ bool check_(){
 	bool check = false;
 	bool *success = false;
 	WP *temp = head;
-	int expr_temp;
+	int expr_temp=0;
 	while(temp != NULL){
 		//printf("%s\n",temp->expr_watching);
 		expr_temp = expr(temp->expr_watching, success);
@@ -124,8 +124,8 @@ WP* set_watchpoint(char *args){
 	val=expr(args,success);
 	WP* tmp=new_wp();
 	tmp->expr_watching=args;
-	printf("%s\n",tmp->expr_watching);
-	printf("%d\n",val);
+	//printf("%s\n",tmp->expr_watching);
+	//printf("%d\n",val);
 	tmp->value_watching=val;
 	return tmp;
 }
