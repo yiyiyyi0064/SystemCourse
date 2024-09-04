@@ -15,7 +15,7 @@ enum {
 	NOTEQ=5,
 	OR=6,
 	AND=7,
-	//POINT,NEG,
+	POINT,NEG,
 	/* TODO: Add more token types */
 };
 
@@ -195,6 +195,15 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	/* TODO: Insert codes to evaluate the expression. */
+	int i;
+	for (i = 0; i < nr_token; i++){
+		if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'))){
+			tokens[i].type = POINT;
+		}
+		if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'))){
+			tokens[i].type = NEG;
+		}
+	}
 	return eval(0,nr_token-1);
 
 }
@@ -358,6 +367,41 @@ int eval(int p,int q){
 	}else {
 		int op=domi_position(p,q);
 		//printf("%d\n",op);
+		if(op==-1){
+			if(tokens[p].type == POINT){
+				if (!strcmp(tokens[p + 2].str, "$eax")){
+					result = swaddr_read(cpu.eax, 4);
+					return result;
+				} else if (!strcmp(tokens[p + 2].str, "$ecx")){
+					result = swaddr_read(cpu.ecx, 4);
+					return result;
+				} else if (!strcmp(tokens[p + 2].str, "$edx")){
+					result = swaddr_read(cpu.edx, 4);
+					return result;
+				} else if (!strcmp(tokens[p + 2].str, "$ebx")){
+					result = swaddr_read(cpu.ebx, 4);
+					return result;
+				} else if (!strcmp(tokens[p + 2].str, "$esp")){
+					result = swaddr_read(cpu.esp, 4);
+					return result;
+				} else if (!strcmp(tokens[p + 2].str, "$ebp")){
+					result = swaddr_read(cpu.ebp, 4);
+					return result;
+				} else if (!strcmp(tokens[p + 2].str, "$esi")){
+					result = swaddr_read(cpu.esi, 4);
+					return result;
+				} else if (!strcmp(tokens[p + 2].str, "$edi")){
+					result = swaddr_read(cpu.edi, 4);
+					return result;
+				} else if (!strcmp(tokens[p + 2].str, "$eip")){
+					result = swaddr_read(cpu.eip, 4);
+					return result;
+				}
+		}else if(tokens[p].type == NEG){
+				sscanf(tokens[q].str, "%d", &result);
+				return -result;
+		}
+		}
 		if(tokens[p].type=='!'){
 			sscanf(tokens[q].str,"%d",&result);
 			return !result;
@@ -382,3 +426,4 @@ int eval(int p,int q){
 	}
 	return 0;
 }
+
