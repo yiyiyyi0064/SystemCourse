@@ -9,6 +9,10 @@ static void do_execute() {
 
 make_instr_helper(si)
 #if DATA_BYTE == 4
+make_helper(jmp_i_l){
+	int len = decode_rm_l(eip + 1);
+	cpu.eip += op_src->val;
+}
 make_helper(jmp_rm_l) {
 	int len = decode_rm_l(eip + 1);
 	cpu.eip = op_src->val - (len + 1);

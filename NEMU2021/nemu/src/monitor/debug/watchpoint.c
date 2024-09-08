@@ -62,15 +62,13 @@ head=tmp1;
   }else{
 //否则需要遍历找到尾部 插入
 //需要注意一点的是 并不是用i去遍历（这是物理上的） 
-
 //而是在链表的逻辑上next遍历
-WP* tmp2;
-tmp2=head;//遍历起点
-while(tmp2->next!=NULL){
-tmp2=tmp2->next;
-
-}
-tmp2->next=tmp1;//此时tmp2是head使用列表的最后一个 在这里尾插新的链表
+		WP* tmp2;
+		tmp2=head;//遍历起点
+		while(tmp2->next!=NULL){
+			tmp2=tmp2->next;
+		}
+		tmp2->next=tmp1;//此时tmp2是head使用列表的最后一个 在这里尾插新的链表
 
   }
 

@@ -10,11 +10,6 @@
 void cpu_exec(uint32_t);
 uint32_t eval(int p,int q);
 int nr_token;
-WP* delete_wp(int p,bool *key);
-void printf_watching();
-void free_wp(WP* p);
-WP* set_watchpoint(char *args);
-WP* new_wp();
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 char* rl_gets() {
 	static char *line_read = NULL;
