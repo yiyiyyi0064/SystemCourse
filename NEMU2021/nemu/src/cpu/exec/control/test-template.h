@@ -3,11 +3,16 @@
 #define instr test
 
 static void do_execute() {
-  DATA_TYPE ret = op_dest -> val & op_src -> val; // cmp two statement bit
-  cpu.eflags.SF = ret >> ((DATA_BYTE << 3) - 1); // left 31 bit, SF == 1, negative number
-  cpu.eflags.ZF = !ret; // Zf == 1, zero number
-  cpu.eflags.CF = 0; //test excustive CF = 0
-  cpu.eflags.OF = 0; //test excustive OF = 0
+  DATA_TYPE ret = op_dest -> val & op_src -> val; 
+  //执行AND操作决定标志位
+  //op_dest op_src 目标操作数与源操作数 
+  cpu.eflags.SF = ret >> ((DATA_BYTE << 3) - 1); 
+  //取结果的最高位 表示结果的符号
+  cpu.eflags.ZF = !ret; 
+  //如果ret==0 那么zf=1
+  cpu.eflags.CF = 0; 
+  cpu.eflags.OF = 0; 
+  //test指令不影响这两个
   ret ^= ret >> 4;
   ret ^= ret >> 2;
   ret ^= ret >> 1;

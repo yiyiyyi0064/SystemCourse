@@ -32,19 +32,19 @@ typedef struct {
      
      union {
 		struct {
-			uint32_t CF		:1;
-			uint32_t pad0	:1;
-			uint32_t PF		:1;
-			uint32_t pad1	:1;
-			uint32_t AF		:1;
-			uint32_t pad2	:1;
-			uint32_t ZF		:1;
-			uint32_t SF		:1;
-			uint32_t TF		:1;
-			uint32_t IF		:1;
-			uint32_t DF		:1;
-			uint32_t OF		:1;
-			uint32_t IOPL	:2;
+			uint32_t CF		:1;//0
+			uint32_t pad0	:1;//1
+			uint32_t PF		:1;//2 奇偶标志位
+			uint32_t pad1	:1;//3
+			uint32_t AF		:1;//4 辅助进位标志
+			uint32_t pad2	:1;//5
+			uint32_t ZF		:1;//6 零标志
+			uint32_t SF		:1;//7 符号标志
+			uint32_t TF		:1;//8 陷阱标志
+			uint32_t IF		:1;//9 中断启用标志
+			uint32_t DF		:1;//10 方向标志
+			uint32_t OF		:1;//11 溢出标志
+			uint32_t IOPL	:2;//12...
 			uint32_t NT		:1;
 			uint32_t pad3	:1;
 			uint16_t pad4;
