@@ -16,6 +16,7 @@ enum {
 	OR=6,
 	AND=7,
 	POINT,NEG,
+	VAR,REF,
 	/* TODO: Add more token types */
 };
 
@@ -48,7 +49,7 @@ static struct rule {
 	{"\\|\\|",OR},
 	{"&&",AND},
 	{"!",'!'},		// equal
-	
+	{"\\b[a-zA-Z0-9_]+\\b", VAR}//
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -196,14 +197,41 @@ uint32_t expr(char *e, bool *success) {
 	}
 	/* TODO: Insert codes to evaluate the expression. */
 	int i;
-	for (i = 0; i < nr_token; i++){
-		if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'))){
-			tokens[i].type = POINT;
+	int prev_type;
+	for (i = 0; i < nr_token; i++)
+	{
+		if (tokens[i].type == '-')
+		{
+			if (i == 0)
+			{
+				tokens[i].type = NEG;
+				continue;
+			}
+
+			prev_type = tokens[i - 1].type;
+			if (!(prev_type == ')' || prev_type == NUM || prev_type == REG || prev_type==VAR))
+			{
+				tokens[i].type = NEG;
+			}
 		}
-		if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'))){
-			tokens[i].type = NEG;
+
+		else if (tokens[i].type == '*')
+		{
+			if (i == 0)
+			{
+				tokens[i].type = REF;
+				continue;
+			}
+
+			prev_type = tokens[i - 1].type;
+			if (!(prev_type == ')' || prev_type == NUM || prev_type == REG || prev_type==VAR))
+			{
+				tokens[i].type = REF;
+			}
 		}
 	}
+
+
 	return eval(0,nr_token-1);
 
 }
