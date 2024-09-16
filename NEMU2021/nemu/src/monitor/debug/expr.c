@@ -3,8 +3,10 @@
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
+ #include<elf.h>
 #include <sys/types.h>
 #include <regex.h>   //这是c语言自带的正则表达式的库
+uint32_t get_var_val(char *var, bool *suc);
 uint32_t eval(int p,int q);
 enum {
 	NOTYPE = 256, 
@@ -382,6 +384,18 @@ uint32_t eval(int p,int q){
 			}else{
 				return 0;
 			}
+		}else if(tokens[p].type==REF){
+			bool* success=false;
+			uint32_t ans = get_var_val(tokens[p].str, success);
+			if (!*success)
+			{
+				printf("NO such varible!\n");
+				assert(0);
+			}
+			else
+			{
+				return ans;
+			}
 		}else{
 			assert(0);
 		}
@@ -429,6 +443,10 @@ uint32_t eval(int p,int q){
 		if(tokens[p].type=='!'){
 			sscanf(tokens[q].str,"%d",&result);
 			return !result;
+		}
+		if(tokens[p].type==REF){
+			sscanf(tokens[q].str,"%d",&result);
+			return swaddr_read(result, 4);
 		}
 		int val1=eval(p,op-1);
 		int val2=eval(op+1,q);
