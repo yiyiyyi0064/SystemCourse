@@ -43,18 +43,15 @@ FLOAT f2F(float a) {
 	int b = *(int *)&a;
 	int sign = b >> 31;
 	int exp = (b >> 23) & 0xff;
-	FLOAT c = b & 0x7fffff;
-	if (exp != 0) {
-		c += 1 << 23;
-	}
+	int x = b & 0x7fffff;
+	if (exp != 0)
+		x += 1 << 23;
 	exp -= 150;
-	if (exp < -16) {
-		c >>= -16 - exp;
-	}
-	if (exp > -16) {
-		c <<= exp + 16;
-	}
-	return sign == 0 ? c : -c;
+	if (exp < -16)
+		x >>= -16 - exp;
+	if (exp > -16)
+		x <<= 16 + exp;
+	return sign == 0 ? x : -x;
 }
 
 FLOAT Fabs(FLOAT a) {
