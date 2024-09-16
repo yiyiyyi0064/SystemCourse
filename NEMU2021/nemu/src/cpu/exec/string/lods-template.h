@@ -3,7 +3,7 @@
 #define instr lods
 
 make_helper(concat(lods_, SUFFIX)) {
-	current_sreg = R_DS;
+	REG(R_EAX)=swaddr_read(reg_l (R_ESI),DATA_BYTE);
 	REG(R_EAX) = MEM_R(cpu.esi);
 	cpu.esi += (cpu.eflags.DF ? -DATA_BYTE : DATA_BYTE);
 
