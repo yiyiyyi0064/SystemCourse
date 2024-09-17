@@ -290,7 +290,7 @@ bool check_parentheses(int p, int q){
 }
 
 uint32_t eval(int p,int q){
-	int result=0;
+	uint32_t result=0;
 	if(p>q){
 		assert(0);
 	}else if(p==q){
@@ -366,7 +366,7 @@ uint32_t eval(int p,int q){
 			}
 		}else if(tokens[p].type==VAR){
 			bool* success=false;
-			uint32_t ans = get_var_val(tokens[p].str, success);
+			result = get_var_val(tokens[p].str, success);
 			if (!*success)
 			{
 				printf("NO such varible!\n");
@@ -374,7 +374,7 @@ uint32_t eval(int p,int q){
 			}
 			else
 			{
-				return ans;
+				return result;
 			}
 		}else{
 			assert(0);
