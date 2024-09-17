@@ -84,6 +84,7 @@ uint32_t get_var_val(char *name,bool*success){
 	*success = true;
   int i;
   for (i = 0; i < nr_symtab_entry; i++) {
+	//遍历在符号表中找对应数据
     if ((symtab[i].st_info & 0xf) == STT_OBJECT) {
       char ls[50];
       strcpy(ls, strtab + symtab[i].st_name);
