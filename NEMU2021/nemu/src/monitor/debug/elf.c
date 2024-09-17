@@ -85,7 +85,8 @@ uint32_t get_var_val(char *name,bool*success){
   int i;
   for (i = 0; i < nr_symtab_entry; i++) {
 	//遍历在符号表中找对应数据
-    if ((symtab[i].st_info & 0xf) == STT_OBJECT) {
+	uint8_t type=ELF32_ST_TYPE(symtab[i].st_info);//得到后四位
+    if (type == STT_OBJECT||type==STT_FUNC) {
       //STT_OBJECT 是数据对象 例如变量、数组、指针(符号类型在低四位)
 	  //char ls[50];
       //strcpy(ls, strtab + symtab[i].st_name);
