@@ -292,7 +292,8 @@ bool check_parentheses(int p, int q){
 }
 
 uint32_t eval(int p,int q){
-	uint32_t result=0;
+	//uint32_t result=0;
+	int result=0;
 	if(p>q){
 		assert(0);
 	}else if(p==q){
@@ -369,8 +370,9 @@ uint32_t eval(int p,int q){
 			}
 		}else if(tokens[p].type==VAR){
 			bool* success=false;
-			printf("%s\n",tokens[p].str);
-			result = get_var_val(tokens[p].str, success);
+			//printf("%s\n",tokens[p].str);  字符输入没有错误
+			result = get_var_val(tokens[p].str, success); //确认应该是这个函数执行有问题
+			printf("%d\n",result);
 			if (!*success)
 			{
 				printf("NO such varible!\n");
