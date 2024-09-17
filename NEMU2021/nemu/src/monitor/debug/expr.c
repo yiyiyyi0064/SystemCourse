@@ -296,6 +296,7 @@ uint32_t eval(int p,int q){
 	if(p>q){
 		assert(0);
 	}else if(p==q){
+		printf("no problem!\n");
 		if(tokens[p].type==NUM){
 		sscanf(tokens[p].str,"%d",&result);
 		return result;
