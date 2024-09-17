@@ -86,7 +86,8 @@ uint32_t get_var_val(char *name,bool*success){
   for (i = 0; i < nr_symtab_entry; i++) {
 	//遍历在符号表中找对应数据
     if ((symtab[i].st_info & 0xf) == STT_OBJECT) {
-      char ls[50];
+      //STT_OBJECT 是数据对象 例如变量、数组、指针(符号类型在低四位)
+	  char ls[50];
       strcpy(ls, strtab + symtab[i].st_name);
       if (strcmp(ls, name) == 0)
         return symtab[i].st_value;
