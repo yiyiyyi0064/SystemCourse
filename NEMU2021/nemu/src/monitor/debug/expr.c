@@ -3,7 +3,7 @@
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
- #include<elf.h>
+#include<elf.h>
 #include <sys/types.h>
 #include <regex.h>   //这是c语言自带的正则表达式的库
 uint32_t get_var_val(char *var, bool *suc);
@@ -384,7 +384,7 @@ uint32_t eval(int p,int q){
 			}else{
 				return 0;
 			}
-		}else if(tokens[p].type==REF){
+		}else if(tokens[p].type==VAR){
 			bool* success=false;
 			uint32_t ans = get_var_val(tokens[p].str, success);
 			if (!*success)
