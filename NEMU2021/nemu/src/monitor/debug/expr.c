@@ -18,7 +18,7 @@ enum {
 	OR=6,
 	AND=7,
 	POINT,NEG,
-	VAR,REF,
+	VAR,
 	/* TODO: Add more token types */
 };
 
@@ -221,14 +221,14 @@ uint32_t expr(char *e, bool *success) {
 		{
 			if (i == 0)
 			{
-				tokens[i].type = REF;
+				tokens[i].type = POINT;
 				continue;
 			}
 
 			prev_type = tokens[i - 1].type;
 			if (!(prev_type == ')' || prev_type == NUM || prev_type == REG || prev_type==VAR))
 			{
-				tokens[i].type = REF;
+				tokens[i].type = POINT;
 			}
 		}
 	}
@@ -443,10 +443,6 @@ uint32_t eval(int p,int q){
 		if(tokens[p].type=='!'){
 			sscanf(tokens[q].str,"%d",&result);
 			return !result;
-		}
-		if(tokens[p].type==REF){
-			sscanf(tokens[q].str,"%d",&result);
-			return swaddr_read(result, 4);
 		}
 		int val1=eval(p,op-1);
 		int val2=eval(op+1,q);
