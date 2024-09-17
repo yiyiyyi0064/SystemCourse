@@ -296,7 +296,7 @@ uint32_t eval(int p,int q){
 	if(p>q){
 		assert(0);
 	}else if(p==q){
-		printf("no problem!\n");
+		//printf("no problem!\n");  successful!
 		if(tokens[p].type==NUM){
 		sscanf(tokens[p].str,"%d",&result);
 		return result;
@@ -369,6 +369,7 @@ uint32_t eval(int p,int q){
 			}
 		}else if(tokens[p].type==VAR){
 			bool* success=false;
+			printf("%s\n",tokens[p].str);
 			result = get_var_val(tokens[p].str, success);
 			if (!*success)
 			{
