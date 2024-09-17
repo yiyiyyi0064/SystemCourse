@@ -199,37 +199,12 @@ uint32_t expr(char *e, bool *success) {
 	}
 	/* TODO: Insert codes to evaluate the expression. */
 	int i;
-	int prev_type;
-	for (i = 0; i < nr_token; i++)
-	{
-		if (tokens[i].type == '-')
-		{
-			if (i == 0)
-			{
-				tokens[i].type = NEG;
-				continue;
-			}
-
-			prev_type = tokens[i - 1].type;
-			if (!(prev_type == ')' || prev_type == NUM || prev_type == REG || prev_type==VAR))
-			{
-				tokens[i].type = NEG;
-			}
+	for (i = 0; i < nr_token; i++){
+		if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'))){
+			tokens[i].type = POINT;
 		}
-
-		else if (tokens[i].type == '*')
-		{
-			if (i == 0)
-			{
-				tokens[i].type = POINT;
-				continue;
-			}
-
-			prev_type = tokens[i - 1].type;
-			if (!(prev_type == ')' || prev_type == NUM || prev_type == REG || prev_type==VAR))
-			{
-				tokens[i].type = POINT;
-			}
+		if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'))){
+			tokens[i].type = NEG;
 		}
 	}
 
