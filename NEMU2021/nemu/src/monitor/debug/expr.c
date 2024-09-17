@@ -18,7 +18,7 @@ enum {
 	OR=6,
 	AND=7,
 	POINT,NEG,
-	VAR,
+	VAR=8,
 	/* TODO: Add more token types */
 };
 
@@ -173,6 +173,11 @@ static bool make_token(char *e) {
 						break;
 					case '!':
 						tokens[nr_token].type='!';
+						nr_token++;
+						break;
+					case 8:
+						tokens[nr_token].type=8;
+						strncpy(tokens[nr_token].str,&e[position-substr_len],substr_len);
 						nr_token++;
 						break;
 					default: 
