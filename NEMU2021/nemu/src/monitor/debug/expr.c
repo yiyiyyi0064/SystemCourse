@@ -205,10 +205,12 @@ uint32_t expr(char *e, bool *success) {
 	/* TODO: Insert codes to evaluate the expression. */
 	int i;
 	for (i = 0; i < nr_token; i++){
-		if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'&&tokens[i - 1].type != VAR))){
+		if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'))){
+			//这里是将已经识别的符号重新解析 
+			//在开头||前面不是数字（即num/hex） （这是反向验证）
 			tokens[i].type = POINT;
 		}
-		if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'&&tokens[i - 1].type != VAR))){
+		if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != NUM && tokens[i - 1].type != HEX && tokens[i - 1].type != ')'))){
 			tokens[i].type = NEG;
 		}
 	}
