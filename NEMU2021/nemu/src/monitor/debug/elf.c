@@ -108,7 +108,7 @@ uint32_t getValue(char* str,bool* success){
             //字符串表+符号偏移量 = 符号所在地址STT_FUNC代表符号的类型是一个函数（符号的类型在低四位）
 			if (strcmp(strtab + symtab[i].st_name, str) == 0){ 
 				//return symtab[i].st_value;
-			printf("%d\n",symtab[i].st_value);
+			printf("%x\n",symtab[i].st_value);
 			return 0;
 		}
 	}
