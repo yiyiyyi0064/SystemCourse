@@ -104,11 +104,14 @@ uint32_t getValue(char* str,bool* success){
 	int i;
 	for (i = 0; i < nr_symtab_entry; i++){
         //STT_OBJECT代表符号的类型是一个数据对象，例如变量、数组、指针（符号的类型在低四位）
-		if ((symtab[i].st_info & 0xf) == STT_OBJECT || (symtab[i].st_info & 0xf) == STT_FUNC){ 
+		if ((symtab[i].st_info & 0xf) == STT_OBJECT ){ 
             //字符串表+符号偏移量 = 符号所在地址STT_FUNC代表符号的类型是一个函数（符号的类型在低四位）
-			if (strcmp(strtab + symtab[i].st_name, str) == 0){ 
-				return symtab[i].st_value;
-			} 
+			//if (strcmp(strtab + symtab[i].st_name, str) == 0){ 
+			//	return symtab[i].st_value;
+			printf("success!\n");
+			return 0;
+			
+			
 		}
 	}
 	*success = false;
