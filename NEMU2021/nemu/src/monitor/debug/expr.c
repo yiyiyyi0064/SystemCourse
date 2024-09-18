@@ -376,6 +376,7 @@ uint32_t eval(int p,int q){
 			//printf("%d\n",result); 问题确定！
 			if (success)
 			{
+				//最后的问题居然是*success中尝试解引用一个空指针。。
 				printf("NO such varible!\n");
 				assert(0);
 			}
