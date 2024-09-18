@@ -110,8 +110,6 @@ uint32_t getValue(char* str,bool* success){
 			//	return symtab[i].st_value;
 			printf("success!\n");
 			return 0;
-			
-			
 		}
 	}
 	*success = false;
