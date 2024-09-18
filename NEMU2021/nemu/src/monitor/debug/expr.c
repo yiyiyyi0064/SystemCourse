@@ -374,7 +374,7 @@ uint32_t eval(int p,int q){
 			result = getValue(tokens[p].str, &success); //确认应该是这个函数执行有问题
 			//debug归来 这里也没啥问题
 			//printf("%d\n",result); 问题确定！
-			if (!success)
+			if (success)
 			{
 				printf("NO such varible!\n");
 				assert(0);
