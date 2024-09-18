@@ -369,12 +369,12 @@ uint32_t eval(int p,int q){
 				return 0;
 			}
 		}else if(tokens[p].type==VAR){
-			bool* success=false;
+			bool success=false;
 			//printf("%s\n",tokens[p].str);  字符输入没有错误
-			result = getValue(tokens[p].str, success); //确认应该是这个函数执行有问题
+			result = getValue(tokens[p].str, &success); //确认应该是这个函数执行有问题
 			//debug归来 这里也没啥问题
 			//printf("%d\n",result); 问题确定！
-			if (!*success)
+			if (!success)
 			{
 				printf("NO such varible!\n");
 				assert(0);
