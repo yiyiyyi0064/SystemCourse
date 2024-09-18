@@ -394,6 +394,8 @@ uint32_t eval(int p,int q){
 		int op=domi_position(p,q);
 		//printf("%d\n",op);
 		if(op==-1){
+			int val;
+            val = eval(p+1,q);
 			if(tokens[p].type == POINT){
 				if (!strcmp(tokens[p + 2].str, "$eax")){
 					result = swaddr_read(cpu.eax, 4);
@@ -422,6 +424,8 @@ uint32_t eval(int p,int q){
 				} else if (!strcmp(tokens[p + 2].str, "$eip")){
 					result = swaddr_read(cpu.eip, 4);
 					return result;
+				}else{
+					return swaddr_read(val,4);
 				}
 		}else if(tokens[p].type == NEG){
 				sscanf(tokens[q].str, "%d", &result);
