@@ -6,7 +6,7 @@
 #include<elf.h>
 #include <sys/types.h>
 #include <regex.h>   //这是c语言自带的正则表达式的库
-uint32_t get_var_val(char *var, bool *suc);
+uint32_t getValue(char *str, bool *suc);
 uint32_t eval(int p,int q);
 enum {
 	NOTYPE = 256, 
@@ -371,7 +371,7 @@ uint32_t eval(int p,int q){
 		}else if(tokens[p].type==VAR){
 			bool* success=false;
 			//printf("%s\n",tokens[p].str);  字符输入没有错误
-			result = get_var_val(tokens[p].str, success); //确认应该是这个函数执行有问题
+			result = getValue(tokens[p].str, success); //确认应该是这个函数执行有问题
 			//printf("%d\n",result); 问题确定！
 			if (!*success)
 			{

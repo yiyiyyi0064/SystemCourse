@@ -80,7 +80,7 @@ void load_elf_tables(int argc, char *argv[]) {
 
 	fclose(fp);
 }
-uint32_t get_var_val(char *name,bool*success){
+/*uint32_t get_var_val(char *name,bool*success){
 	*success = true;
   int i;
   for (i = 0; i < nr_symtab_entry; i++) {
@@ -88,15 +88,41 @@ uint32_t get_var_val(char *name,bool*success){
 	uint8_t type=ELF32_ST_TYPE(symtab[i].st_info);//得到后四位
     if (type == STT_OBJECT||type==STT_FUNC) {
       //STT_OBJECT 是数据对象 例如变量、数组、指针(符号类型在低四位)
-	  //char ls[50];
-      //strcpy(ls, strtab + symtab[i].st_name);
-      //if (strcmp(ls, name) == 0)
-        //return symtab[i].st_value;
-		if (strcmp(strtab + symtab[i].st_name, name) == 0){ 
-				return symtab[i].st_value;
-			} 
+	  char ls[50];
+      strcpy(ls, strtab + symtab[i].st_name);
+      if (strcmp(ls, name) == 0)
+        return symtab[i].st_value;
+		//if (strcmp(strtab + symtab[i].st_name, name) == 0){ 
+			//	return symtab[i].st_value;
+			//} 
     }
   }
   *success = false;
   return 0;
+} */
+uint32_t getValue(char* str,bool* success){
+	int i;
+	for (i = 0; i < nr_symtab_entry; i++){
+        //STT_OBJECT代表符号的类型是一个数据对象，例如变量、数组、指针（符号的类型在低四位）
+		if ((symtab[i].st_info & 0xf) == STT_OBJECT || (symtab[i].st_info & 0xf) == STT_FUNC){ 
+            //字符串表+符号偏移量 = 符号所在地址STT_FUNC代表符号的类型是一个函数（符号的类型在低四位）
+			if (strcmp(strtab + symtab[i].st_name, str) == 0){ 
+				return symtab[i].st_value;
+			} 
+		}
+	}
+	*success = false;
+	return 0;
 }
+
+/*char* getFuncName(swaddr_t eip) {
+	int i;
+	for(i = 0; i < nr_symtab_entry; i ++) {
+		if((symtab[i].st_info & 0xf) == STT_FUNC ){
+				if(eip >= symtab[i].st_value && eip <= symtab[i].st_value + symtab[i].st_size)  {
+				return strtab + symtab[i].st_name;
+		}
+		}
+	}
+	return 0;
+}*/
