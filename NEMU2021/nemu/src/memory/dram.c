@@ -15,7 +15,7 @@
 
 typedef union {
 	struct {
-		uint32_t col	: COL_WIDTH;
+		uint32_t col	: COL_WIDTH;//10
 		uint32_t row	: ROW_WIDTH;
 		uint32_t bank	: BANK_WIDTH;
 		uint32_t rank	: RANK_WIDTH;
@@ -125,4 +125,11 @@ void dram_write(hwaddr_t addr, size_t len, uint32_t data) {
 		/* data cross the burst boundary */
 		ddr3_write(addr + BURST_LEN, temp + BURST_LEN, mask + BURST_LEN);
 	}
+}
+void call_ddr3_read(hwaddr_t addr, void *data){
+	ddr3_read(addr,data);
+}
+
+void call_ddr3_write(hwaddr_t addr, void *data, uint8_t *mask){
+	ddr3_write(addr,data,mask);
 }

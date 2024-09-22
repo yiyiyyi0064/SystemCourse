@@ -1,6 +1,6 @@
 #ifndef __MACRO_H__
 #define __MACRO_H__
-
+//处理读写跨越cache block边界
 #define str_temp(x) #x
 #define str(x) str_temp(x)
 
