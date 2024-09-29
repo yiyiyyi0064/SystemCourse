@@ -80,14 +80,15 @@ void restart() {
 	/* Read the file with name `argv[1]' into ramdisk. */
 	init_ramdisk();
 #endif
-	cpu.eflags.val=2;
-	init_cache();
+	
 	/* Read the entry code into memory. */
 	load_entry();
 
 	/* Set the initial instruction pointer. */
 	cpu.eip = ENTRY_START;
+	cpu.eflags.val=2;
 	
 	/* Initialize DRAM. */
 	init_ddr3();
+	init_cache();
 }

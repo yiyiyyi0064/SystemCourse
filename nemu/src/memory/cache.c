@@ -4,8 +4,10 @@
 #include "burst.h"
 #include <stdlib.h>
 
+//在restart中调用 刷新
 void init_cache() {
   int i;
+  //一二级类似 二级多一个dirty
   for (i = 0; i < CACHE_L1_SET_NUM * CACHE_L1_WAY_NUM; i++) {
     cache_L1[i].validVal = false;
   }
