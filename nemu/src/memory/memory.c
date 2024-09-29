@@ -1,5 +1,7 @@
 #include "common.h"
-#include "cache.h"
+#include "memory/cache.h"
+#include "burst.h"
+
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
 
@@ -18,9 +20,9 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 		memcpy(temp, cache[block].byte + offset, len);
 	}
 	int zero = 0;
-	uint32_t result = unalign_rw(temp + zero, 4) & (~0u >> ((4 - len) << 3));
+	uint32_t ret = unalign_rw(temp + zero, 4) & (~0u >> ((4 - len) << 3));
 	//printf("time: %ld\n", cnt);
-	return result;
+	return ret;
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
@@ -41,6 +43,7 @@ uint32_t swaddr_read(swaddr_t addr, size_t len) {
 #endif
 	return lnaddr_read(addr, len);
 }
+
 
 void swaddr_write(swaddr_t addr, size_t len, uint32_t data) {
 #ifdef DEBUG

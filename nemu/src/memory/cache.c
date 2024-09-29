@@ -1,40 +1,46 @@
-
 #include "common.h"
 #include "burst.h"
 #include "stdlib.h"
-#include "cache.h"
+#include "memory/cache.h"
 uint32_t dram_read(hwaddr_t addr, size_t len);
 void call_ddr3_read(hwaddr_t, void *);
 void call_ddr3_write(hwaddr_t, void *, uint8_t *);
 void init_cache(){
+//初始化cache设置初始值
     int i;
     for (i = 0; i < CACHE_SIZE / CACHE_BLOCK; i++){
         cache[i].valid = false;
         cache[i].tag = 0;
         memset(cache[i].byte, 0, CACHE_BLOCK);
+        //将block中的值更新
     }
     cnt = 0;
 }
-//模拟cache访问
 
+//模拟cache访问
 uint32_t cache_read(hwaddr_t addr) {
-    uint32_t set = (addr >> 6) & 0x7f; //取出地址中set的部分（右移block位并 & 1111111），set = 7 byte (set = 2^s = 128), offset = 6 byte (block = 2^e = 64)
-    bool hit = false;
+    uint32_t set = (addr >> 6) & 0x7f; //取出地址中set的部分（右移block位并 & 1111111）
+    bool hit = false;//定义是否命中
     int i;
     for (i = set * E; i < (set + 1) * E; i++) { //找到相应set所在
-        if (cache[i].tag == (addr >> 13) && cache[i].valid) { //如果tag和地址相符合并且alid == true
+        if (cache[i].tag == (addr >> 13) && cache[i].valid) { 
+            //valid+tag 命中
             hit = true; 
             cnt += 2;
             break;
         }
     }
-    if (!hit) { //找不到
-        for (i = set * E; i < (set + 1) * E; i++) { //去到相应set所在
-            if (!cache[i].valid) //找到空的地方退出
+    //如果无法命中
+    //分两种情况：有空白区域，找到空白区域，从内存中读取
+    //没有空白，执行随机替换算法，再读取数据
+    if (!hit) { 
+        for (i = set * E; i < (set + 1) * E; i++) { 
+            if (!cache[i].valid) 
             break; 
         }
-        if (i == (set + 1) * E) { // 到最后仍然没有找到空的地方，执行随机替换算法
+        if (i == (set + 1) * E) { 
             srand(0);
+            //随机替换
             i = set * E + rand() % E;
         }
         cache[i].valid = true;
@@ -60,11 +66,12 @@ void cache_write(hwaddr_t addr, size_t len, uint32_t data) {
             break;
         }
     }
-    if (hit) { // 写直通
+    if (hit) { 
         memcpy(cache[i].byte + offset, &data, len);
     }     
     else {
         i = cache_read(addr);
+        //先从内存中读出同步更新cache
          memcpy(cache[i].byte + offset, &data, len);
     }
 }
