@@ -1,6 +1,7 @@
 #include "common.h"
 #include "memory/cache.h"
 #include "burst.h"
+#include "nemu.h"
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
@@ -8,25 +9,24 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 /* Memory accessing interfaces */
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	uint32_t offset = addr & (CACHE_BLOCK - 1);
-	uint32_t block = cache_read(addr);
-	uint8_t temp[4];
-	memset(temp, 0, sizeof(temp));
-	if (offset + len >= CACHE_BLOCK) {
-		uint32_t second_block = cache_read(addr + len);
-		memcpy(temp, cache[block].byte + offset, CACHE_BLOCK - offset);
-		memcpy(temp + CACHE_BLOCK - offset, cache[second_block].byte, len - (CACHE_BLOCK - offset));
-	} else {
-		memcpy(temp, cache[block].byte + offset, len);
-	}
-	int zero = 0;
-	uint32_t ret = unalign_rw(temp + zero, 4) & (~0u >> ((4 - len) << 3));
-	//printf("time: %ld\n", cnt);
-	return ret;
+  int cache_L1_way_1_index = read_cache_L1(addr);
+  uint32_t block_bias = addr & (CACHE_BLOCK_SIZE - 1);
+  uint8_t ret[BURST_LEN << 1];
+  //printf("%d\n", block_bias);
+  if (block_bias + len > CACHE_BLOCK_SIZE) {
+    int cache_L1_way_2_index = read_cache_L1(addr + CACHE_BLOCK_SIZE - block_bias);
+    memcpy(ret, cache_L1[cache_L1_way_1_index].data + block_bias, CACHE_BLOCK_SIZE - block_bias);
+    memcpy(ret  + CACHE_BLOCK_SIZE - block_bias, cache_L1[cache_L1_way_2_index].data, len - (CACHE_BLOCK_SIZE - block_bias));
+  } else {
+    memcpy(ret, cache_L1[cache_L1_way_1_index].data + block_bias, len);
+  }
+  int tmp = 0;
+  uint32_t ans = unalign_rw(ret + tmp, 4) & (~0u >> ((4 - len) << 3));
+  return ans;
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	cache_write(addr, len, data);
+	 write_cache_L1(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
