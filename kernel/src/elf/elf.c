@@ -31,28 +31,32 @@ uint32_t loader() {
 	elf = (void*)buf;
 
 	/* TODO: fix the magic number with the correct one */
-	const uint32_t elf_magic = 0x464c457f;//!
+    //修改为elf文件的魔数
+	const uint32_t elf_magic = 0x464c457f;
 	uint32_t *p_magic = (void *)buf;
 	nemu_assert(*p_magic == elf_magic);
-
+ 
 	/* Load each program segment */
-	//panic("please implement me");
-	int i;
-	ph = (void*)(buf + elf->e_phoff);
-	for(i=0;i<elf->e_phnum;i++ ) {
+    //初始化ph指向program header开头，buf指向elf文件的开头，e_phoff为program header偏移量
+    ph = (void *)buf + elf->e_phoff;
+    //eph指向program header的末尾，e_phnum为program header中segment的数量
+    //遍历program header表，加载需要加载的segment
+	Elf32_Phdr *eph = 0;
+	for(eph = ph + elf->e_phnum;ph < eph;ph++) {
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
-			uint32_t pa = ph->p_vaddr;
+            uint32_t addr = ph->p_vaddr; //存储segment加载到的目标地址
 			/* TODO: read the content of the segment from the ELF file 
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
-			 ramdisk_read((void *)pa,ph->p_offset,ph->p_filesz);
-			 
+            //利用函数从当前segment中读取filesiz大小的数据到目标地址
+         ramdisk_read((void *)addr, ELF_OFFSET_IN_DISK + ph->p_offset,ph->p_filesz);
+			
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
-				memset((void*)pa+ph->p_filesz,0,ph->p_memsz-ph->p_filesz);
-				ph++;
+         //通过函数将未初始化的数据置0
+         memset((void *)addr + ph->p_filesz,0,ph->p_memsz - ph->p_filesz);
 
 #ifdef IA32_PAGE
 			/* Record the program break for future use. */
