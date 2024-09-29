@@ -15,7 +15,7 @@
 
 typedef union {
 	struct {
-		uint32_t col	: COL_WIDTH;//10
+		uint32_t col	: COL_WIDTH;
 		uint32_t row	: ROW_WIDTH;
 		uint32_t bank	: BANK_WIDTH;
 		uint32_t rank	: RANK_WIDTH;
@@ -31,16 +31,16 @@ typedef union {
 
 #define HW_MEM_SIZE (1 << (COL_WIDTH + ROW_WIDTH + BANK_WIDTH + RANK_WIDTH))
 
-uint8_t dram[NR_RANK][NR_BANK][NR_ROW][NR_COL];
-uint8_t *hw_mem = (void *)dram;
+uint8_t dram[NR_RANK][NR_BANK][NR_ROW][NR_COL];// DRAM存储空间
+uint8_t *hw_mem = (void *)dram;// 内存指针，指向DRAM
 
 typedef struct {
-	uint8_t buf[NR_COL];
-	int32_t row_idx;
-	bool valid;
+	uint8_t buf[NR_COL];// 行缓冲区
+	int32_t row_idx;// 当前行索引
+	bool valid;// 行缓冲区是否有效
 } RB;
 
-RB rowbufs[NR_RANK][NR_BANK];
+RB rowbufs[NR_RANK][NR_BANK];// 行缓冲区数组
 
 void init_ddr3() {
 	int i, j;
@@ -50,12 +50,12 @@ void init_ddr3() {
 		}
 	}
 }
-
+//将DRAM中的数据读取到行缓冲区获得数据
 static void ddr3_read(hwaddr_t addr, void *data) {
 	Assert(addr < HW_MEM_SIZE, "physical address %x is outside of the physical memory!", addr);
 
 	dram_addr temp;
-	temp.addr = addr & ~BURST_MASK;
+	temp.addr = addr & ~BURST_MASK;//将地址按照BURST_MASK进行掩码，取出行地址、bank地址、rank地址
 	uint32_t rank = temp.rank;
 	uint32_t bank = temp.bank;
 	uint32_t row = temp.row;
@@ -63,7 +63,7 @@ static void ddr3_read(hwaddr_t addr, void *data) {
 
 	if(!(rowbufs[rank][bank].valid && rowbufs[rank][bank].row_idx == row) ) {
 		/* read a row into row buffer */
-		memcpy(rowbufs[rank][bank].buf, dram[rank][bank][row], NR_COL);
+		memcpy(rowbufs[rank][bank].buf, dram[rank][bank][row], NR_COL);//将DRAM中的一行数据复制到行缓冲区
 		rowbufs[rank][bank].row_idx = row;
 		rowbufs[rank][bank].valid = true;
 	}
@@ -95,6 +95,13 @@ static void ddr3_write(hwaddr_t addr, void *data, uint8_t *mask) {
 	/* write back to dram */
 	memcpy(dram[rank][bank][row], rowbufs[rank][bank].buf, NR_COL);
 }
+//将DRAM中的数据读取到行缓冲区来获得数据
+void ddr3_read_me(hwaddr_t addr, void* data) {
+  ddr3_read(addr, data) ;
+}
+void ddr3_write_me(hwaddr_t addr, void* data, uint8_t* mask) {
+  ddr3_write(addr, data, mask) ;
+}
 
 uint32_t dram_read(hwaddr_t addr, size_t len) {
 	uint32_t offset = addr & BURST_MASK;
@@ -125,11 +132,4 @@ void dram_write(hwaddr_t addr, size_t len, uint32_t data) {
 		/* data cross the burst boundary */
 		ddr3_write(addr + BURST_LEN, temp + BURST_LEN, mask + BURST_LEN);
 	}
-}
-//读取DRAM中数据 加载到缓存区
-void ddr3_read_me(hwaddr_t addr, void* data) {
-  ddr3_read(addr, data) ;
-}
-void ddr3_write_me(hwaddr_t addr, void* data, uint8_t* mask) {
-  ddr3_write(addr, data, mask) ;
 }

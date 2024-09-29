@@ -1,6 +1,9 @@
 #include "common.h"
 #include "memory/cache.h"
+#include "cpu/reg.h"
 #include "burst.h"
+#include "macro.h"
+#include <stdlib.h>
 #include "nemu.h"
 
 uint32_t dram_read(hwaddr_t, size_t);
@@ -26,7 +29,8 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	 write_cache_L1(addr, len, data);
+	//dram_write(addr, len, data);
+	write_cache_L1(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
@@ -43,7 +47,6 @@ uint32_t swaddr_read(swaddr_t addr, size_t len) {
 #endif
 	return lnaddr_read(addr, len);
 }
-
 
 void swaddr_write(swaddr_t addr, size_t len, uint32_t data) {
 #ifdef DEBUG
