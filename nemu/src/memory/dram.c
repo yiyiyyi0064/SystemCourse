@@ -126,6 +126,7 @@ void dram_write(hwaddr_t addr, size_t len, uint32_t data) {
 		ddr3_write(addr + BURST_LEN, temp + BURST_LEN, mask + BURST_LEN);
 	}
 }
+//读取DRAM中数据 加载到缓存区
 void ddr3_read_me(hwaddr_t addr, void* data) {
   ddr3_read(addr, data) ;
 }
