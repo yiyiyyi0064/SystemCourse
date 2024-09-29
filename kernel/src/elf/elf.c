@@ -39,24 +39,17 @@ uint32_t loader() {
 	/* Load each program segment */
     //初始化ph指向program header开头，buf指向elf文件的开头，e_phoff为program header偏移量
     ph = (void *)buf + elf->e_phoff;
-    //eph指向program header的末尾，e_phnum为program header中segment的数量
-    //遍历program header表，加载需要加载的segment
-	Elf32_Phdr *eph = 0;
-	for(eph = ph + elf->e_phnum;ph < eph;ph++) {
+    int i = 0;
+	for(; i < elf->e_phnum; i ++, ph ++) {
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
-            uint32_t addr = ph->p_vaddr; //存储segment加载到的目标地址
 			/* TODO: read the content of the segment from the ELF file 
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
-            //利用函数从当前segment中读取filesiz大小的数据到目标地址
-         ramdisk_read((void *)addr, ELF_OFFSET_IN_DISK + ph->p_offset,ph->p_filesz);
-			
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
-         //通过函数将未初始化的数据置0
-         memset((void *)addr + ph->p_filesz,0,ph->p_memsz - ph->p_filesz);
+			memset((void *)(ph->p_vaddr + ph->p_filesz), 0, ph->p_memsz - ph->p_filesz);
 
 #ifdef IA32_PAGE
 			/* Record the program break for future use. */
